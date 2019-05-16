@@ -225,7 +225,9 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		BookItemModel bookItemModel = new BookItemModel();
 		BookItem bookItem = bookItemModel.find(isbn);
 		if(bookItem != null) {
-			bookItems1.add(bookItem);
+			if(bookItemModel.updateStatus(bookItem.getCallnumber())) {
+				bookItems1.add(bookItem);
+			}
 		}else {
 			JOptionPane.showMessageDialog(null, "This book is not available right now.");
 		}
@@ -257,6 +259,7 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		bookItems1.remove(selectedRow);
 		fillDataToTable1(bookItems1);
 	}
+	//event click to create a checkout 
 	private void jbuttonCheckOut_actionPerformed(ActionEvent arg0) {
 		//check if the list of borrowed book is empty or not
 		if(bookItems1.size() > 0) {
@@ -268,8 +271,8 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 				//check if the user id is valid or not
 				if(customer != null) {
 					JFrameMain jFrameMain = (JFrameMain) this.getTopLevelAncestor();
-					CheckOut checkOut = new CheckOut();
 					int employee_id = jFrameMain.getEmployee_id();
+					CheckOut checkOut = new CheckOut();
 					Date date = new Date();
 					CheckOutModel checkOutModel = new CheckOutModel();
 					checkOut.setBorrow_date(date);

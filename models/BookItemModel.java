@@ -48,4 +48,18 @@ public class BookItemModel {
 		}
 		return bookItem;
 	}
+	public boolean updateStatus(String callnumber) {
+		boolean result  =true;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("update bookitem set status=? where callnumber = ?");	
+			preparedStatement.setInt(1, 1);
+			preparedStatement.setString(2, callnumber);
+			result = preparedStatement.executeUpdate()>0;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			result = false;
+		}
+		return true;
+	}
 }
