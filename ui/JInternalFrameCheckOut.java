@@ -225,7 +225,7 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		BookItemModel bookItemModel = new BookItemModel();
 		BookItem bookItem = bookItemModel.find(isbn);
 		if(bookItem != null) {
-			if(bookItemModel.updateStatus(bookItem.getCallnumber())) {
+			if(bookItemModel.updateStatusToOff(bookItem.getCallnumber())) {
 				bookItems1.add(bookItem);
 			}
 		}else {
@@ -255,9 +255,13 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 	}
 	//event click to delete book in BorrowList table
 	private void jbuttonDelete_actionPerformed(ActionEvent arg0) {
+		BookItemModel bookItemModel = new BookItemModel();
 		int selectedRow = jtableBorrowList.getSelectedRow();
-		bookItems1.remove(selectedRow);
-		fillDataToTable1(bookItems1);
+		BookItem bookItem = bookItems1.get(selectedRow);
+		if(bookItemModel.updateStatusToOn(bookItem.getCallnumber())) {
+			bookItems1.remove(selectedRow);
+			fillDataToTable1(bookItems1);
+		}
 	}
 	//event click to create a checkout 
 	private void jbuttonCheckOut_actionPerformed(ActionEvent arg0) {
