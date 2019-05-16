@@ -29,6 +29,16 @@ public class JFrameMain extends JFrame {
 	private JMenuItem mntmCustomer;
 	private JMenuItem mntmCheckOut;
 	private JMenuItem mntmCheckIn;
+	private int employee_id;
+
+	
+	public int getEmployee_id() {
+		return employee_id;
+	}
+
+	public void setEmployee_id(int employee_id) {
+		this.employee_id = employee_id;
+	}
 
 	/**
 	 * Launch the application.

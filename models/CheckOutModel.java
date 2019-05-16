@@ -1,7 +1,10 @@
 package models;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +54,9 @@ public class CheckOutModel {
 		boolean result = true;
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("insert into checkout(borrow_date, employee_id) value(?,?)");
-			preparedStatement.setDate(0, new java.sql.Date(checkOut.getBorrow_date().getTime()));
-			preparedStatement.setInt(1, checkOut.getEmployee_id());
+					.prepareStatement("insert into checkout(borrow_date, employee_id) values(?,?)");
+			preparedStatement.setDate(1, new java.sql.Date(checkOut.getBorrow_date().getTime()));
+			preparedStatement.setInt(2, checkOut.getEmployee_id());
 			result = preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -90,5 +93,40 @@ public class CheckOutModel {
 			System.err.println(e.getMessage());
 		}
 		return result;
+	}
+	public int createGetId(CheckOut checkOut) {
+		// for insert a new candidate
+		ResultSet rs = null;
+		int id = 0;
+		
+		String sql = "insert into checkout(borrow_date, employee_id) values(?,?)";
+		
+		try (Connection conn = ConnectDB.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);) {
+		
+		// set parameters for statement
+		pstmt.setDate(1, new java.sql.Date(checkOut.getBorrow_date().getTime()));
+		pstmt.setInt(2, checkOut.getEmployee_id());
+		
+		int rowAffected = pstmt.executeUpdate();
+			if(rowAffected == 1)
+			{
+			// get candidate id
+				rs = pstmt.getGeneratedKeys();
+				if(rs.next())
+				id = rs.getInt(1);
+			
+			}
+		} catch (SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+		try {
+			if(rs != null)  rs.close();
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return id;
 	}
 }

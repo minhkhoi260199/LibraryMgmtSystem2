@@ -9,11 +9,18 @@ import javax.swing.table.DefaultTableModel;
 
 import entities.Book;
 import entities.BookItem;
+import entities.CheckOut;
+import entities.Customer;
+import entities.Detail;
 import models.BookItemModel;
 import models.BookModel;
+import models.CheckOutModel;
+import models.CustomerModel;
+import models.DetailModel;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,6 +29,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -54,7 +63,7 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		setClosable(true);
 		setTitle("Check Out Book");
 		getContentPane().setFont(new Font("SansSerif", Font.PLAIN, 15));
-		setBounds(100, 100, 1076, 518);
+		setBounds(100, 100, 1076, 612);
 		getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -134,6 +143,11 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		getContentPane().add(jtextFieldBorrowBook);
 		
 		JButton jbuttonDelete = new JButton("Delete");
+		jbuttonDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonDelete_actionPerformed(arg0);
+			}
+		});
 		jbuttonDelete.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jbuttonDelete.setBounds(925, 63, 90, 37);
 		getContentPane().add(jbuttonDelete);
@@ -148,6 +162,21 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		jtextFieldUserId.setColumns(10);
 		jtextFieldUserId.setBounds(277, 63, 243, 37);
 		getContentPane().add(jtextFieldUserId);
+		
+		JLabel lblUserId = new JLabel("User Id");
+		lblUserId.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		lblUserId.setBounds(204, 69, 58, 28);
+		getContentPane().add(lblUserId);
+		
+		JButton jbuttonCheckOut = new JButton("Check Out");
+		jbuttonCheckOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonCheckOut_actionPerformed(arg0);
+			}
+		});
+		jbuttonCheckOut.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		jbuttonCheckOut.setBounds(884, 506, 141, 37);
+		getContentPane().add(jbuttonCheckOut);
 		
 		loadInternalJFrame();
 	}
@@ -195,7 +224,11 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		String isbn = (jtableList.getValueAt(selectedRow, 0)).toString();
 		BookItemModel bookItemModel = new BookItemModel();
 		BookItem bookItem = bookItemModel.find(isbn);
-		bookItems1.add(bookItem);
+		if(bookItem != null) {
+			bookItems1.add(bookItem);
+		}else {
+			JOptionPane.showMessageDialog(null, "This book is not available right now.");
+		}
 		fillDataToTable1(bookItems1);
 	}
 	//event click of BorrowList table to add data to jtextFieldBorrowBook
@@ -217,5 +250,60 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, "The book was borrowed. Please enter a different callnumber.");
 		}
 		fillDataToTable1(bookItems1);
+	}
+	//event click to delete book in BorrowList table
+	private void jbuttonDelete_actionPerformed(ActionEvent arg0) {
+		int selectedRow = jtableBorrowList.getSelectedRow();
+		bookItems1.remove(selectedRow);
+		fillDataToTable1(bookItems1);
+	}
+	private void jbuttonCheckOut_actionPerformed(ActionEvent arg0) {
+		//check if the list of borrowed book is empty or not
+		if(bookItems1.size() > 0) {
+			//check if the user id field has value or not
+			if(!jtextFieldUserId.getText().isEmpty()) {
+				int user_id = Integer.parseInt(jtextFieldUserId.getText().toString());
+				CustomerModel customerModel = new CustomerModel();
+				Customer customer = customerModel.find(user_id);
+				//check if the user id is valid or not
+				if(customer != null) {
+					JFrameMain jFrameMain = (JFrameMain) this.getTopLevelAncestor();
+					CheckOut checkOut = new CheckOut();
+					int employee_id = jFrameMain.getEmployee_id();
+					Date date = new Date();
+					CheckOutModel checkOutModel = new CheckOutModel();
+					checkOut.setBorrow_date(date);
+					checkOut.setEmployee_id(employee_id);
+					int checkout_id = checkOutModel.createGetId(checkOut);
+					//check the checkout_id
+					if(checkout_id != 0) {
+						for(BookItem bookItem : bookItems1) {
+							Detail detail = new Detail();
+							detail.setCallnumber(bookItem.getCallnumber());
+							detail.setCheckout_id(checkout_id);
+							BookModel bookModel = new BookModel();
+							Book book = bookModel.find(bookItem.getIsbn());
+							detail.setPayment(book.getPrice());
+							detail.setUser_id(user_id);
+							DetailModel detailModel = new DetailModel();
+							detailModel.create(detail);
+						}
+						JOptionPane.showMessageDialog(null, "Creating checkout successfully.");
+					//show message if the check out id is 0
+					}else {
+						JOptionPane.showMessageDialog(null, "Creating checkout failed.");
+					}
+				//if the user id is invalid => show message
+				}else {
+					JOptionPane.showMessageDialog(null, "The user id is invalid.");
+				}
+			//if the field is empty => show message
+			}else {
+				JOptionPane.showMessageDialog(null, "Please enter user id.");
+			}
+		//if the borrowed book is empty => show message
+		}else {
+			JOptionPane.showMessageDialog(null, "Please select your book you want to borrow please.");
+		}
 	}
 }

@@ -21,6 +21,7 @@ public class BookModel {
 				book.setAuthor_id(resultSet.getInt("author_id"));
 				book.setCategory_id(resultSet.getInt("category_id"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getInt("price"));
 				books.add(book);
 			}
 		} catch (Exception e) {
@@ -34,12 +35,13 @@ public class BookModel {
 		boolean result = true;
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("Insert into book(isbn, name, author_id, category_id, quantity) value(?,?,?,?,?)");
+					.prepareStatement("Insert into book(isbn, name, author_id, category_id, quantity, price) values(?,?,?,?,?,?)");
 			preparedStatement.setString(1, book.getIsbn());
 			preparedStatement.setString(2, book.getName());
 			preparedStatement.setInt(3, book.getAuthor_id());
 			preparedStatement.setInt(4, book.getCategory_id());
 			preparedStatement.setInt(5, book.getQuantity());
+			preparedStatement.setInt(6, book.getPrice());
 			result = preparedStatement.executeUpdate() > 0 ;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -66,12 +68,13 @@ public class BookModel {
 		boolean result = true;
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("update book set name = ?, author_id = ?, category_id = ?, quantity = ? where isbn = ?");
+					.prepareStatement("update book set name = ?, author_id = ?, category_id = ?, quantity = ? ,price = ? where isbn = ?");
 			preparedStatement.setString(1, book.getName());
 			preparedStatement.setInt(2, book.getAuthor_id());
 			preparedStatement.setInt(3, book.getCategory_id());
 			preparedStatement.setInt(4, book.getQuantity());
 			preparedStatement.setString(5, book.getIsbn());
+			preparedStatement.setInt(6, book.getPrice());
 			result = preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -94,6 +97,7 @@ public class BookModel {
 				book.setAuthor_id(resultSet.getInt("author_id"));
 				book.setCategory_id(resultSet.getInt("category_id"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getInt("price"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -116,6 +120,7 @@ public class BookModel {
 				book.setAuthor_id(resultSet.getInt("author_id"));
 				book.setCategory_id(resultSet.getInt("category_id"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getInt("price"));
 				books.add(book);
 			}
 		} catch (Exception e) {
