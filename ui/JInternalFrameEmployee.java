@@ -13,12 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.sun.org.apache.xerces.internal.parsers.CachingParserPool.ShadowedGrammarPool;
-import com.sun.prism.paint.Stop;
-
 import entities.Employee;
 import helper.BCrypt;
-import jdk.nashorn.internal.ir.BreakableNode;
+
 import models.EmployeeModel;
 
 import javax.swing.JLabel;
@@ -235,7 +232,6 @@ public class JInternalFrameEmployee extends JInternalFrame {
 			if(!jtextFieldUsername.getText().isEmpty()) {
 				if(jtextFieldUsername.getText().length()<6) {
 					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
-					
 				}else {
 					if(jtextFieldPhone.getText().length()< 10){
 						JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");

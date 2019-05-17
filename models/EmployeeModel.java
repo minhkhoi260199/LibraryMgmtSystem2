@@ -134,7 +134,6 @@ public class EmployeeModel {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
 				Employee employee = new Employee();
-				employee = new Employee();
 				employee.setEmployee_id(resultSet.getInt("employee_id"));
 				employee.setUsername(resultSet.getString("username"));
 				employee.setPassword(resultSet.getString("password"));

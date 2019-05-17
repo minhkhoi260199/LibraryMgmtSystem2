@@ -87,5 +87,23 @@ public class AuthorModel {
 		return result;
 	}
 	
+	public List<Author> search(String kw) {
+		List<Author> authors = new ArrayList<Author>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from author where name like ?");
+			preparedStatement.setString(1, "%" + kw + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				Author author = new Author();
+				author.setName(resultSet.getString("name"));
+				authors.add(author);
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			authors = null;
+		}
+		return authors;
+	}
 
 }
