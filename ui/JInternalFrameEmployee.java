@@ -195,47 +195,13 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	private void jbtnSearch_actionPerformed(ActionEvent e) {
 		String kw= jtextFieldSearch.getText();
 		EmployeeModel employeeModel = new EmployeeModel();
-		int type =jcomboBoxSearchType.getSelectedIndex();
-		if(type == 0) {
-			List<Employee> employees = employeeModel.searchByName(kw);
-			if(employees.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
-			}else {
-				fillDatatoJTable(employeeModel.searchByName(kw));
-			}
-		}
-		else if(type == 1) {
-			List<Employee> employees = employeeModel.searchByPhone(kw);
-			if(employees.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
-			}else {
-				fillDatatoJTable(employeeModel.searchByPhone(kw));
-			}
-		}
-		else if(type == 2){
-			List<Employee> employees = employeeModel.searchByAddress(kw);
-			if(employees.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
-			}else {
-				fillDatatoJTable(employeeModel.searchByAddress(kw));
-			}
-		}
-		else if(type == 3) {
-			List<Employee> employees = employeeModel.searchByDepartment(kw);
-			if(employees.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
-			}else {
-				fillDatatoJTable(employeeModel.searchByDepartment(kw));
-			}
+		String type = (String) jcomboBoxSearchType.getSelectedItem().toString().toLowerCase();
+		List<Employee> employees = employeeModel.search(type,kw);
+		if(employees.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Change right type and enter keyword you want to find");
 		}else {
-			List<Employee> employees = employeeModel.searchByUserName(kw);
-			if(employees.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
-			}else {
-				fillDatatoJTable(employeeModel.searchByUserName(kw));
-			}
+			fillDatatoJTable(employeeModel.search(type,kw));
 		}
-		
 	}
 	
 	//Delete employee

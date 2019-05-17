@@ -124,12 +124,12 @@ public class EmployeeModel {
 		return result;
 	}
 	
-	//Search by name employee info
-	public List<Employee> searchByName(String kw){
+	//Search employee info
+	public List<Employee> search(String type,String kw){
 		List<Employee> employees = new ArrayList<Employee>();
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select * from employee where name like ?");
+					.prepareStatement("select * from employee where "+type+" like ?");
 			preparedStatement.setString(1, "%" + kw + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
@@ -150,113 +150,6 @@ public class EmployeeModel {
 		}
 		return employees;
 	}
-	
-	//Search by phone employee info
-		public List<Employee> searchByPhone(String kw){
-			List<Employee> employees = new ArrayList<Employee>();
-			try {
-				PreparedStatement preparedStatement = ConnectDB.getConnection()
-						.prepareStatement("select * from employee where phone like ?");
-				preparedStatement.setString(1, "%" + kw + "%");
-				ResultSet resultSet = preparedStatement.executeQuery();
-				while(resultSet.next()) {
-					Employee employee = new Employee();
-					employee = new Employee();
-					employee.setEmployee_id(resultSet.getInt("employee_id"));
-					employee.setUsername(resultSet.getString("username"));
-					employee.setPassword(resultSet.getString("password"));
-					employee.setName(resultSet.getString("name"));
-					employee.setAddress(resultSet.getString("address"));
-					employee.setPhone(resultSet.getString("phone"));
-					employee.setDepartment(resultSet.getString("department"));
-					employees.add(employee);
-				}
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-				employees = null;
-			}
-			return employees;
-		}
-		
-		//Search by address employee info
-		public List<Employee> searchByAddress(String kw){
-			List<Employee> employees = new ArrayList<Employee>();
-			try {
-				
-				PreparedStatement preparedStatement = ConnectDB.getConnection()
-						.prepareStatement("select * from employee where address like ?");
-				preparedStatement.setString(1, "%" + kw + "%");
-				ResultSet resultSet = preparedStatement.executeQuery();
-				while(resultSet.next()) {
-					Employee employee = new Employee();
-					employee = new Employee();
-					employee.setEmployee_id(resultSet.getInt("employee_id"));
-					employee.setUsername(resultSet.getString("username"));
-					employee.setPassword(resultSet.getString("password"));
-					employee.setName(resultSet.getString("name"));
-					employee.setAddress(resultSet.getString("address"));
-					employee.setPhone(resultSet.getString("phone"));
-					employee.setDepartment(resultSet.getString("department"));
-					employees.add(employee);
-				}
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-				employees = null;
-			}
-			return employees;
-		}
-		public List<Employee> searchByDepartment(String kw){
-			List<Employee> employees = new ArrayList<Employee>();
-			try {
-				
-				PreparedStatement preparedStatement = ConnectDB.getConnection()
-						.prepareStatement("select * from employee where department like ?");
-				preparedStatement.setString(1, "%" + kw + "%");
-				ResultSet resultSet = preparedStatement.executeQuery();
-				while(resultSet.next()) {
-					Employee employee = new Employee();
-					employee = new Employee();
-					employee.setEmployee_id(resultSet.getInt("employee_id"));
-					employee.setUsername(resultSet.getString("username"));
-					employee.setPassword(resultSet.getString("password"));
-					employee.setName(resultSet.getString("name"));
-					employee.setAddress(resultSet.getString("address"));
-					employee.setPhone(resultSet.getString("phone"));
-					employee.setDepartment(resultSet.getString("department"));
-					employees.add(employee);
-				}
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-				employees = null;
-			}
-			return employees;
-		}
-		public List<Employee> searchByUserName(String kw){
-			List<Employee> employees = new ArrayList<Employee>();
-			try {
-				
-				PreparedStatement preparedStatement = ConnectDB.getConnection()
-						.prepareStatement("select * from employee where username like ?");
-				preparedStatement.setString(1, "%" + kw + "%");
-				ResultSet resultSet = preparedStatement.executeQuery();
-				while(resultSet.next()) {
-					Employee employee = new Employee();
-					employee = new Employee();
-					employee.setEmployee_id(resultSet.getInt("employee_id"));
-					employee.setUsername(resultSet.getString("username"));
-					employee.setPassword(resultSet.getString("password"));
-					employee.setName(resultSet.getString("name"));
-					employee.setAddress(resultSet.getString("address"));
-					employee.setPhone(resultSet.getString("phone"));
-					employee.setDepartment(resultSet.getString("department"));
-					employees.add(employee);
-				}
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
-				employees = null;
-			}
-			return employees;
-		}
 	// login
 	public Employee find(String username){
 		Employee employee = null;

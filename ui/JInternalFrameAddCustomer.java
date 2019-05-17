@@ -189,31 +189,14 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 	private void jbtnSearch_actionPerformed(ActionEvent e) {
 		String kw= jtextFieldSearch.getText();
 		CustomerModel customerModel = new CustomerModel();
-		int type = jcomboBox.getSelectedIndex();
-		if(type == 0 ) {
-			List<Customer> customers = customerModel.searchByName(kw);
-			if(customers.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter name of customer you want to find");
-			}else {
-				fillDatatoJTable(customerModel.searchByName(kw));
-			}
-		}else if(type == 1) {
-			List<Customer> customers = customerModel.searchByPhone(kw);
-			if(customers.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter phone of customer you want to find");
-			}else {
-				fillDatatoJTable(customerModel.searchByPhone(kw));
-			}
+		String type = (String) jcomboBox.getSelectedItem().toString().toLowerCase();
+		List<Customer> customers = customerModel.search(type,kw);
+		if(customers.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Change right type and enter keyword you want to find");
 		}else {
-			List<Customer> customers = customerModel.searchByAddress(kw);
-			if(customers.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Enter address of customer you want to find");
-			}else {
-				fillDatatoJTable(customerModel.searchByAddress(kw));
-			}
+			fillDatatoJTable(customerModel.search(type,kw));
 		}
-		
-		
+			
 	}
 	//Delete customer
 	private void jbtnDelete_actionPerformed(ActionEvent e) {
