@@ -1,9 +1,11 @@
 package ui;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -11,8 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.sun.org.apache.xerces.internal.parsers.CachingParserPool.ShadowedGrammarPool;
+import com.sun.prism.paint.Stop;
+
 import entities.Employee;
 import helper.BCrypt;
+import jdk.nashorn.internal.ir.BreakableNode;
 import models.EmployeeModel;
 
 import javax.swing.JLabel;
@@ -24,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPasswordField;
+import javax.swing.JComboBox;
 
 public class JInternalFrameEmployee extends JInternalFrame {
 	private JTextField jtextFieldSearch;
@@ -37,6 +44,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	private JButton jbtnAdd;
 	private JTextField jtextFieldUsername;
 	private JPasswordField jpasswordField;
+	private JComboBox jcomboBoxSearchType;
 
 	/**
 	 * Launch the application.
@@ -60,7 +68,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	public JInternalFrameEmployee() {
 		setTitle("Employee Info");
 		setClosable(true);
-		setBounds(100, 100, 588, 610);
+		setBounds(100, 100, 644, 610);
 		getContentPane().setLayout(null);
 		
 		jtextFieldSearch = new JTextField();
@@ -74,11 +82,11 @@ public class JInternalFrameEmployee extends JInternalFrame {
 				jbtnSearch_actionPerformed(e);
 			}
 		});
-		jbtnSearch.setBounds(369, 6, 97, 33);
+		jbtnSearch.setBounds(369, 6, 117, 33);
 		getContentPane().add(jbtnSearch);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 51, 564, 192);
+		scrollPane.setBounds(6, 51, 620, 192);
 		getContentPane().add(scrollPane);
 		
 		jTable = new JTable();
@@ -92,7 +100,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Employee Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(6, 255, 564, 314);
+		panel.setBounds(6, 255, 620, 314);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -176,6 +184,10 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		jpasswordField.setBounds(150, 108, 408, 29);
 		panel.add(jpasswordField);
 		
+		jcomboBoxSearchType = new JComboBox();
+		jcomboBoxSearchType.setBounds(498, 6, 128, 33);
+		getContentPane().add(jcomboBoxSearchType);
+		
 		loadJInternalFrame();
 	}
 		
@@ -183,12 +195,47 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	private void jbtnSearch_actionPerformed(ActionEvent e) {
 		String kw= jtextFieldSearch.getText();
 		EmployeeModel employeeModel = new EmployeeModel();
-		List<Employee> employees = employeeModel.search(kw);
-		if(employees.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Enter name of employee you want to find");
-		}else {
-			fillDatatoJTable(employeeModel.search(kw));
+		int type =jcomboBoxSearchType.getSelectedIndex();
+		if(type == 0) {
+			List<Employee> employees = employeeModel.searchByName(kw);
+			if(employees.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
+			}else {
+				fillDatatoJTable(employeeModel.searchByName(kw));
+			}
 		}
+		else if(type == 1) {
+			List<Employee> employees = employeeModel.searchByPhone(kw);
+			if(employees.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
+			}else {
+				fillDatatoJTable(employeeModel.searchByPhone(kw));
+			}
+		}
+		else if(type == 2){
+			List<Employee> employees = employeeModel.searchByAddress(kw);
+			if(employees.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
+			}else {
+				fillDatatoJTable(employeeModel.searchByAddress(kw));
+			}
+		}
+		else if(type == 3) {
+			List<Employee> employees = employeeModel.searchByDepartment(kw);
+			if(employees.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
+			}else {
+				fillDatatoJTable(employeeModel.searchByDepartment(kw));
+			}
+		}else {
+			List<Employee> employees = employeeModel.searchByUserName(kw);
+			if(employees.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Enter keyword you want to find");
+			}else {
+				fillDatatoJTable(employeeModel.searchByUserName(kw));
+			}
+		}
+		
 	}
 	
 	//Delete employee
@@ -219,19 +266,32 @@ public class JInternalFrameEmployee extends JInternalFrame {
 			int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = employeeModel.find(employee_id);
-			employee.setUsername(jtextFieldUsername.getText());
-			String password = String.valueOf(jpasswordField.getPassword());
-			employee.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-			employee.setName(jtextFieldName.getText());
-			employee.setAddress(jtextFieldAddress.getText());
-			employee.setPhone(jtextFieldPhone.getText());
-			employee.setDepartment(jtextFieldDepartment.getText());
-			if(employeeModel.update(employee)) {
-				JOptionPane.showMessageDialog(null, "Done");
-				fillDatatoJTable(employeeModel.findAll());
-			}else {
-				JOptionPane.showMessageDialog(null, "Failed");
+			if(!jtextFieldUsername.getText().isEmpty()) {
+				if(jtextFieldUsername.getText().length()<6) {
+					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
+					
+				}else {
+					if(jtextFieldPhone.getText().length()< 10){
+						JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");
+					}else {
+						employee.setUsername(jtextFieldUsername.getText());	
+						String password = String.valueOf(jpasswordField.getPassword());
+						employee.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+						employee.setName(jtextFieldName.getText());
+						employee.setAddress(jtextFieldAddress.getText());
+						employee.setPhone(jtextFieldPhone.getText());
+						employee.setDepartment(jtextFieldDepartment.getText());
+						if(employeeModel.update(employee)) {
+							JOptionPane.showMessageDialog(null, "Done");
+							fillDatatoJTable(employeeModel.findAll());
+						}else {
+							JOptionPane.showMessageDialog(null, "Failed");
+						}
+					}
+					
+				}
 			}
+			
 			
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Failed");
@@ -243,18 +303,34 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		try {
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = new Employee();
-			employee.setUsername(jtextFieldUsername.getText());
 			String password = String.valueOf(jpasswordField.getPassword());
-			employee.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
-			employee.setName(jtextFieldName.getText());
-			employee.setAddress(jtextFieldAddress.getText());
-			employee.setPhone(jtextFieldPhone.getText());
-			employee.setDepartment(jtextFieldDepartment.getText());
+			if(jtextFieldName.getText().isEmpty() || jtextFieldAddress.getText().isEmpty() ||
+				jtextFieldPhone.getText().isEmpty() || jtextFieldDepartment.getText().isEmpty() ||
+				jtextFieldUsername.getText().isEmpty() || password.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Pls enter full information of employee");
+			}else {
+				if(jtextFieldUsername.getText().length()<6) {
+					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
+				}else {
+					employee.setUsername(jtextFieldUsername.getText());	
+				}
+				employee.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
+				employee.setName(jtextFieldName.getText());
+				employee.setAddress(jtextFieldAddress.getText());
+				if(jtextFieldPhone.getText().length()< 10){
+					JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");
+				}else {
+					employee.setPhone(jtextFieldPhone.getText());
+				}
+				
+				employee.setDepartment(jtextFieldDepartment.getText());
+			}
+			
 			if (employeeModel.create(employee)) {
 				JOptionPane.showMessageDialog(null, "Successfull");
 				fillDatatoJTable(employeeModel.findAll());
 			}else {
-				JOptionPane.showMessageDialog(null, "Failed");
+				JOptionPane.showMessageDialog(null, "Failed to add new employee");
 			}
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Please try again!");
@@ -306,6 +382,13 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	private void loadJInternalFrame() {
 		EmployeeModel employeeModel = new EmployeeModel();
 		fillDatatoJTable(employeeModel.findAll());
+		DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
+		defaultComboBoxModel.addElement("Name");
+		defaultComboBoxModel.addElement("Phone");
+		defaultComboBoxModel.addElement("Address");
+		defaultComboBoxModel.addElement("Department");
+		defaultComboBoxModel.addElement("Username");
+		jcomboBoxSearchType.setModel(defaultComboBoxModel);
 		jbtnDelete.setEnabled(false);
 		jbtnUpdate.setEnabled(false);
 	}
