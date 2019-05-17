@@ -15,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
 
 import entities.Employee;
 import helper.BCrypt;
-
 import models.EmployeeModel;
 
 import javax.swing.JLabel;

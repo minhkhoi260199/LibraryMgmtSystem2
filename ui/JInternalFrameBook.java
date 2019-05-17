@@ -12,8 +12,10 @@ import javax.swing.table.DefaultTableModel;
 
 import entities.Author;
 import entities.Book;
+import entities.BookItem;
 import entities.Category;
 import models.AuthorModel;
+import models.BookItemModel;
 import models.BookModel;
 import models.CategoryModel;
 import javax.swing.BoxLayout;
@@ -31,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 
 public class JInternalFrameBook extends JInternalFrame {
 	private JTable jtableBook;
@@ -47,10 +50,7 @@ public class JInternalFrameBook extends JInternalFrame {
 	private JButton jbtnAll;
 	private JComboBox jcomboBoxAuthor;
 	private JComboBox jcomboBoxCategory;
-	private JTextField jtextFieldISBN;
-	private JLabel jlabelISBN;
-	private JButton jbtnSave;
-	private JButton jbtnBack;
+	private JButton jbuttonOpenBookItem;
 
 	/**
 	 * Launch the application.
@@ -74,11 +74,11 @@ public class JInternalFrameBook extends JInternalFrame {
 	public JInternalFrameBook() {
 		setClosable(true);
 		setTitle("Book");
-		setBounds(100, 100, 969, 540);
+		setBounds(100, 100, 818, 480);
 		getContentPane().setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(21, 56, 921, 196);
+		scrollPane.setBounds(21, 56, 766, 196);
 		getContentPane().add(scrollPane);
 		
 		jtableBook = new JTable();
@@ -95,40 +95,40 @@ public class JInternalFrameBook extends JInternalFrame {
 		jpanel = new JPanel();
 		jpanel.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jpanel.setBorder(new TitledBorder(null, "Book Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 0, 0)));
-		jpanel.setBounds(21, 263, 921, 241);
+		jpanel.setBounds(31, 263, 745, 177);
 		getContentPane().add(jpanel);
 		jpanel.setLayout(null);
 		
 		JLabel jlabelName = new JLabel("Name");
 		jlabelName.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelName.setBounds(70, 72, 72, 35);
+		jlabelName.setBounds(51, 21, 59, 35);
 		jpanel.add(jlabelName);
 		
 		JLabel jlabelAuthor = new JLabel("Author");
 		jlabelAuthor.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelAuthor.setBounds(70, 119, 72, 35);
+		jlabelAuthor.setBounds(51, 72, 72, 35);
 		jpanel.add(jlabelAuthor);
 		
 		JLabel lblCategory = new JLabel("Category");
 		lblCategory.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCategory.setBounds(490, 119, 72, 35);
+		lblCategory.setBounds(398, 72, 72, 35);
 		jpanel.add(lblCategory);
 		
 		JLabel jlabelQuantity = new JLabel("Quantity");
 		jlabelQuantity.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelQuantity.setBounds(490, 72, 72, 35);
+		jlabelQuantity.setBounds(398, 21, 72, 35);
 		jpanel.add(jlabelQuantity);
 		
 		jtextFieldName = new JTextField();
 		jtextFieldName.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jtextFieldName.setBounds(137, 76, 278, 35);
+		jtextFieldName.setBounds(121, 21, 223, 28);
 		jpanel.add(jtextFieldName);
 		jtextFieldName.setColumns(10);
 		
 		jtextFieldQuantity = new JTextField();
 		jtextFieldQuantity.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jtextFieldQuantity.setColumns(10);
-		jtextFieldQuantity.setBounds(574, 76, 278, 35);
+		jtextFieldQuantity.setBounds(475, 21, 218, 28);
 		jpanel.add(jtextFieldQuantity);
 		
 		jbtnUpdate = new JButton("Update");
@@ -138,7 +138,7 @@ public class JInternalFrameBook extends JInternalFrame {
 				jbtnUpdate_actionPerformed(e);
 			}
 		});
-		jbtnUpdate.setBounds(70, 180, 90, 28);
+		jbtnUpdate.setBounds(367, 134, 90, 28);
 		jpanel.add(jbtnUpdate);
 		
 		jbtnDelete = new JButton("Delete");
@@ -148,7 +148,7 @@ public class JInternalFrameBook extends JInternalFrame {
 				jbtnDelete_actionPerformed(arg0);
 			}
 		});
-		jbtnDelete.setBounds(196, 180, 90, 28);
+		jbtnDelete.setBounds(493, 134, 90, 28);
 		jpanel.add(jbtnDelete);
 		
 		jbtnCreate = new JButton("Create");
@@ -158,52 +158,33 @@ public class JInternalFrameBook extends JInternalFrame {
 				jbtnCreate_actionPerformed(arg0);
 			}
 		});
-		jbtnCreate.setBounds(762, 180, 90, 28);
+		jbtnCreate.setBounds(625, 134, 90, 28);
 		jpanel.add(jbtnCreate);
 		
 		jcomboBoxAuthor = new JComboBox();
 		jcomboBoxAuthor.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jcomboBoxAuthor.setBounds(137, 124, 278, 35);
+		jcomboBoxAuthor.setBounds(120, 72, 224, 28);
 		jpanel.add(jcomboBoxAuthor);
 		
 		jcomboBoxCategory = new JComboBox();
 		jcomboBoxCategory.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jcomboBoxCategory.setBounds(574, 124, 278, 35);
+		jcomboBoxCategory.setBounds(474, 72, 218, 28);
 		jpanel.add(jcomboBoxCategory);
 		
-		jlabelISBN = new JLabel("ISBN");
-		jlabelISBN.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelISBN.setBounds(70, 30, 72, 35);
-		jpanel.add(jlabelISBN);
-		
-		jtextFieldISBN = new JTextField();
-		jtextFieldISBN.setBounds(137, 34, 278, 35);
-		jpanel.add(jtextFieldISBN);
-		jtextFieldISBN.setColumns(10);
-		
-		jbtnSave = new JButton("Save");
-		jbtnSave.addActionListener(new ActionListener() {
+		jbuttonOpenBookItem = new JButton("BookItem List");
+		jbuttonOpenBookItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jbtnSave_actionPerformed(e);
+				jbuttonOpenBookItem_actionPerformed(e);
 			}
 		});
-		jbtnSave.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jbtnSave.setBounds(648, 180, 90, 28);
-		jpanel.add(jbtnSave);
-		
-		jbtnBack = new JButton("Back");
-		jbtnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				jbtnBack_actionPerformed(e);
-			}
-		});
-		jbtnBack.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jbtnBack.setBounds(532, 181, 90, 28);
-		jpanel.add(jbtnBack);
+		jbuttonOpenBookItem.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		jbuttonOpenBookItem.setEnabled(false);
+		jbuttonOpenBookItem.setBounds(68, 134, 145, 28);
+		jpanel.add(jbuttonOpenBookItem);
 		
 		jtextFieldSearch = new JTextField();
 		jtextFieldSearch.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jtextFieldSearch.setBounds(159, 6, 260, 38);
+		jtextFieldSearch.setBounds(159, 11, 237, 33);
 		getContentPane().add(jtextFieldSearch);
 		jtextFieldSearch.setColumns(10);
 		
@@ -218,7 +199,7 @@ public class JInternalFrameBook extends JInternalFrame {
 		
 		lblSearchBookTitle = new JLabel("Search book title");
 		lblSearchBookTitle.setFont(new Font("SansSerif", Font.PLAIN, 16));
-		lblSearchBookTitle.setBounds(21, 6, 142, 38);
+		lblSearchBookTitle.setBounds(21, 11, 142, 33);
 		getContentPane().add(lblSearchBookTitle);
 		
 		jbtnAll = new JButton("All");
@@ -227,19 +208,22 @@ public class JInternalFrameBook extends JInternalFrame {
 				jbtnAll_actionPerformed(e);
 			}
 		});
-		jbtnAll.setBounds(657, 9, 100, 35);
+		jbtnAll.setBounds(606, 10, 100, 35);
 		getContentPane().add(jbtnAll);
 		loadInternalJFrame();
 	}
 	private void loadInternalJFrame() {
+		//Fill book table
 		BookModel bookModel = new BookModel();
-		autoFillDateToTable(bookModel.findAll());
+		autoFillDataToTable(bookModel.findAll());
+		//Fill author combobox
 		AuthorModel authorModel = new AuthorModel();
 		List<Author> authors = authorModel.findAll();
 		DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<String>();
 		for(Author author : authors) {
 			defaultComboBoxModel.addElement(author.getName());
 		}
+		//fill category combobox
 		CategoryModel categoryModel = new CategoryModel();
 		DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<String>();
 		for(Category category : categoryModel.findAll()) {
@@ -247,14 +231,11 @@ public class JInternalFrameBook extends JInternalFrame {
 		}
 		jcomboBoxAuthor.setModel(defaultComboBoxModel);
 		jcomboBoxCategory.setModel(defaultComboBoxModel1);
-		jlabelISBN.setVisible(false);
-		jtextFieldISBN.setVisible(false);
-		jbtnSave.setVisible(false);
-		jbtnBack.setVisible(false);
 		jbtnUpdate.setEnabled(false);
 		jbtnDelete.setEnabled(false);
+		jbuttonOpenBookItem.setEnabled(false);
 	}
-	private void autoFillDateToTable(List<Book> books) {
+	private void autoFillDataToTable(List<Book> books) {
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		defaultTableModel.addColumn("ISBN");
 		defaultTableModel.addColumn("Name");
@@ -311,33 +292,34 @@ public class JInternalFrameBook extends JInternalFrame {
 		jcomboBoxAuthor.setSelectedIndex(au_id);
 		jtextFieldName.setText(book.getName().toString());
 		jtextFieldQuantity.setText(String.valueOf(book.getQuantity()));
+		jbuttonOpenBookItem.setEnabled(true);
 		jbtnUpdate.setEnabled(true);
 		jbtnDelete.setEnabled(true);
+		jbtnCreate.setEnabled(false);
 	}
 	private void btnSearch_actionPerformed(ActionEvent arg0) {
 		String keyword = jtextFieldSearch.getText();
 		BookModel bookModel = new BookModel();
 		List<Book> books = bookModel.search(keyword);
 		jtextFieldName.setText("");
-		jtextFieldName.setText("");
 		jtextFieldQuantity.setText("");
 		jtextFieldSearch.setText("");
 		jcomboBoxCategory.setSelectedIndex(0);
 		jcomboBoxAuthor.setSelectedIndex(0);
-		jtextFieldISBN.setText("");
-		autoFillDateToTable(books);
+		autoFillDataToTable(books);
 	}
 	private void jbtnAll_actionPerformed(ActionEvent e) {
 		BookModel bookModel = new BookModel();
-		List<Book> books = bookModel.findAll();
-		jtextFieldName.setText("");
+		autoFillDataToTable(bookModel.findAll());
 		jtextFieldName.setText("");
 		jtextFieldQuantity.setText("");
 		jtextFieldSearch.setText("");
 		jcomboBoxCategory.setSelectedIndex(0);
 		jcomboBoxAuthor.setSelectedIndex(0);
-		jtextFieldISBN.setText("");
-		autoFillDateToTable(books);
+		jbuttonOpenBookItem.setEnabled(false);
+		jbtnUpdate.setEnabled(false);
+		jbtnDelete.setEnabled(false);
+		jbtnCreate.setEnabled(true);
 	}
 	private void jbtnUpdate_actionPerformed(ActionEvent e) {
 		try {
@@ -362,8 +344,37 @@ public class JInternalFrameBook extends JInternalFrame {
 			//set new category_id into book
 			book.setCategory_id(category.getCategory_id());
 			if(bookModel.update(book)) {
-				JOptionPane.showMessageDialog(null, "Successfully Updated.");
-				autoFillDateToTable(bookModel.findAll());
+				JOptionPane.showMessageDialog(null, "Book Successfully Updated.");
+				//Update bookitem
+				BookItemModel bookItemModel = new BookItemModel();
+				if(bookItemModel.deleteBookitemByISBN(isbn)) {
+					int flag = 0;
+					for(int i=1; i<=book.getQuantity(); i++) {
+						BookItem bookItem = new BookItem();
+						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+i;
+						bookItem.setCallnumber(callnumber);
+						bookItem.setIsbn(book.getIsbn());
+						bookItem.setStatus(0);
+						if(bookItemModel.createBookItem(bookItem)) {
+							flag = 1;
+						} else {
+							flag = 0;
+						}
+					}
+					if(flag == 1) {
+						JOptionPane.showMessageDialog(null, book.getQuantity()+" bookItem updated");
+						jtextFieldName.setText("");
+						jtextFieldQuantity.setText("");
+						jtextFieldSearch.setText("");
+						jcomboBoxCategory.setSelectedIndex(0);
+						jcomboBoxAuthor.setSelectedIndex(0);
+					} else {
+						JOptionPane.showMessageDialog(null, "Created Failed.");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Update bookItem Failed.");
+				}
+				autoFillDataToTable(bookModel.findAll());
 			}else {
 				JOptionPane.showMessageDialog(null, "Updated Failed.");
 			}
@@ -378,19 +389,26 @@ public class JInternalFrameBook extends JInternalFrame {
 		jtextFieldSearch.setText("");
 		jcomboBoxCategory.setSelectedIndex(0);
 		jcomboBoxAuthor.setSelectedIndex(0);
-		jtextFieldISBN.setText("");
 		try {
 			BookModel bookModel = new BookModel();
 			int result = JOptionPane.showConfirmDialog(null, "Are you sure that you want to delete this book?","Confirm",JOptionPane.YES_NO_OPTION);
 			if(result == JOptionPane.YES_OPTION) {
 				int selectedRow = jtableBook.getSelectedRow();
 				String isbn = jtableBook.getValueAt(selectedRow, 0).toString();
-				if(bookModel.delete(isbn)) {
+				BookItemModel bookItemModel = new BookItemModel();
+				if(bookItemModel.deleteBookitemByISBN(isbn)) {
+					Book book = bookModel.find(isbn);
+					JOptionPane.showMessageDialog(null, "Deleted "+book.getQuantity()+" bookItems");
+					if(bookModel.delete(isbn)) {
 					JOptionPane.showMessageDialog(null, "Successfully Deleted.");
-					autoFillDateToTable(bookModel.findAll());
-				}else {
+					autoFillDataToTable(bookModel.findAll());
+					}else {
+					JOptionPane.showMessageDialog(null, "Deleted Failed.");
+					}
+				} else {
 					JOptionPane.showMessageDialog(null, "Deleted Failed.");
 				}
+				
 			}else {
 				JOptionPane.showMessageDialog(null, "Canceled.");
 			}
@@ -401,67 +419,19 @@ public class JInternalFrameBook extends JInternalFrame {
 		}
 	}
 	private void jbtnCreate_actionPerformed(ActionEvent arg0) {
-		jlabelISBN.setVisible(true);
-		jtextFieldISBN.setVisible(true);
-		jbtnSave.setVisible(true);
-		jbtnBack.setVisible(true);
-		jbtnCreate.setVisible(false);
-		jtextFieldName.setText("");
-		jtextFieldQuantity.setText("");
-		jtextFieldSearch.setText("");
-		jcomboBoxCategory.setSelectedIndex(0);
-		jcomboBoxAuthor.setSelectedIndex(0);
-		jtextFieldISBN.setText("");
-		
+		JinternalFrameCreateBook jinternalFrameCreateBook = new JinternalFrameCreateBook();
+		JDesktopPane desktopPane = (JDesktopPane) getParent(); // lay desktop Pane tu parent
+		desktopPane.add(jinternalFrameCreateBook);
+		jinternalFrameCreateBook.setVisible(true);
 	}
-	private void jbtnSave_actionPerformed(ActionEvent e) {
-		jlabelISBN.setVisible(false);
-		jtextFieldISBN.setVisible(false);
-		jbtnSave.setVisible(false);
-		jbtnCreate.setVisible(true);
-		jbtnBack.setVisible(false);
-		try {
-			Book book = new Book();
-			book.setName(jtextFieldName.getText());
-			book.setIsbn(jtextFieldISBN.getText());
-			book.setQuantity(Integer.parseInt(jtextFieldQuantity.getText().toString()));
-			int selectedIndex = jcomboBoxAuthor.getSelectedIndex();
-			AuthorModel authorModel = new AuthorModel();
-			Author author = authorModel.findAll().get(selectedIndex);
-			CategoryModel categoryModel = new CategoryModel();
-			Category category = categoryModel.findAll().get(selectedIndex);
-			book.setCategory_id(category.getCategory_id());
-			book.setAuthor_id(author.getAuthor_id());
-			BookModel bookModel = new BookModel();
-			jtextFieldName.setText("");
-			jtextFieldQuantity.setText("");
-			jtextFieldSearch.setText("");
-			jcomboBoxCategory.setSelectedIndex(0);
-			jcomboBoxAuthor.setSelectedIndex(0);
-			jtextFieldISBN.setText("");
-			if(bookModel.create(book)) {
-				JOptionPane.showMessageDialog(null, "Successfully Created.");
-				autoFillDateToTable(bookModel.findAll());
-			}else {
-				JOptionPane.showMessageDialog(null, "Created Failed.");
-			}
-		} catch (Exception e2) {
-			// TODO: handle exception
-			System.err.println(e2.getMessage());
-			JOptionPane.showMessageDialog(null, "Error!!!");
-		}
-	}
-	private void jbtnBack_actionPerformed(ActionEvent e) {
-		jtextFieldName.setText("");
-		jtextFieldQuantity.setText("");
-		jtextFieldSearch.setText("");
-		jcomboBoxCategory.setSelectedIndex(0);
-		jcomboBoxAuthor.setSelectedIndex(0);
-		jtextFieldISBN.setText("");
-		jtextFieldISBN.setVisible(false);
-		jbtnSave.setVisible(false);
-		jtextFieldISBN.setVisible(false);
-		jbtnBack.setVisible(false);
-		jbtnCreate.setVisible(true);
+	private void jbuttonOpenBookItem_actionPerformed(ActionEvent e) {
+		JinternalFrameListBookItem jinternalFrameListBookItem = new JinternalFrameListBookItem();
+		JDesktopPane desktopPane = (JDesktopPane) getParent(); // lay desktop Pane tu parent
+		desktopPane.add(jinternalFrameListBookItem);
+		jinternalFrameListBookItem.setVisible(true);
+		//Load thong tin selected book
+		BookItemModel bookItemModel = new BookItemModel();
+		int selectedRow = jtableBook.getSelectedRow();
+		jinternalFrameListBookItem.autoFillDataToTable(bookItemModel.findAllbyISBN((jtableBook.getValueAt(selectedRow, 0)).toString()));
 	}
 }

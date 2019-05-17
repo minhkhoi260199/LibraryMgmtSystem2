@@ -97,6 +97,7 @@ public class JFrameLogin extends JFrame {
 		}else {
 			this.setVisible(false);
 			JFrameMain jFrameMain = new JFrameMain();
+			jFrameMain.setEmployee_id(employee.getEmployee_id());
 			jFrameMain.setVisible(true);
 		}
 	}	

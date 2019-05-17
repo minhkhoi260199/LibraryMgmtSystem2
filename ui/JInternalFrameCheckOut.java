@@ -247,7 +247,9 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		BookItemModel bookItemModel = new BookItemModel();
 		BookItem bookItem = bookItemModel.findCallnumber(callnumber);
 		if(bookItem != null) {
-			bookItems1.add(bookItem);
+			if(bookItemModel.updateStatusToOff(bookItem.getCallnumber())) {
+				bookItems1.add(bookItem);
+			}
 		}else {
 			JOptionPane.showMessageDialog(null, "The book was borrowed. Please enter a different callnumber.");
 		}
