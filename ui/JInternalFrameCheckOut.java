@@ -71,12 +71,6 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		getContentPane().add(scrollPane);
 		
 		jtableList = new JTable();
-		jtableList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				jtableList_mouseClicked(arg0);
-			}
-		});
 		jtableList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		jtableList.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		scrollPane.setViewportView(jtableList);
@@ -93,11 +87,21 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		getContentPane().add(jtextFieldISBN);
 		
 		jbuttonSearch = new JButton("Search");
+		jbuttonSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jbuttonSearch_actionPerformed(e);
+			}
+		});
 		jbuttonSearch.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jbuttonSearch.setBounds(375, 14, 90, 37);
 		getContentPane().add(jbuttonSearch);
 		
-		JButton jbuttonAll = new JButton("All");
+		jbuttonAll = new JButton("All");
+		jbuttonAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonAll_actionPerformed(arg0);
+			}
+		});
 		jbuttonAll.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jbuttonAll.setBounds(477, 14, 90, 37);
 		getContentPane().add(jbuttonAll);
@@ -194,6 +198,7 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 	private JTextField jtextFieldCallnumber;
 	private JTextField jtextFieldBorrowBook;
 	private JTextField jtextFieldUserId;
+	private JButton jbuttonAll;
 	//display data in the InternalJFrame
 	private void loadInternalJFrame() {
 		BookModel bookModel = new BookModel();
@@ -227,21 +232,23 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		jtableBorrowList.setModel(defaultTableModel);
 		jtableBorrowList.getTableHeader().setReorderingAllowed(false);
 	}
-	//event click of List table to add data to BorrowList table
-	private void jtableList_mouseClicked(MouseEvent arg0) {
+	//event click to add data to BorrowList table
+	private void jbuttonTo_actionPerformed(ActionEvent e) {
 		int selectedRow = jtableList.getSelectedRow();
-		String isbn = (jtableList.getValueAt(selectedRow, 0)).toString();
-		BookItemModel bookItemModel = new BookItemModel();
-		BookItem bookItem = bookItemModel.find(isbn);
-		if(bookItem != null) {
-			if(bookItemModel.updateStatusToOff(bookItem.getCallnumber())) {
-				bookItems1.add(bookItem);
+		if(selectedRow != -1) {
+			String isbn = (jtableList.getValueAt(selectedRow, 0)).toString();
+			BookItemModel bookItemModel = new BookItemModel();
+			BookItem bookItem = bookItemModel.find(isbn);
+			if(bookItem != null) {
+				if(bookItemModel.updateStatusToOff(bookItem.getCallnumber())) {
+					bookItems1.add(bookItem);
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "This book is not available right now.");
 			}
 		}else {
-			JOptionPane.showMessageDialog(null, "This book is not available right now.");
+			JOptionPane.showMessageDialog(null, "Please select your book.");
 		}
-	}
-	private void jbuttonTo_actionPerformed(ActionEvent e) {
 		fillDataToTable1(bookItems1);
 	}
 	//event click of BorrowList table to add data to jtextFieldBorrowBook
@@ -255,26 +262,34 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 	//event click of AddCallnumber button to add data to BorrowList table
 	private void jbuttonAddCallnumber_actionPerformed(ActionEvent arg0) {
 		String callnumber = jtextFieldCallnumber.getText();
-		BookItemModel bookItemModel = new BookItemModel();
-		BookItem bookItem = bookItemModel.findCallnumber(callnumber);
-		if(bookItem != null) {
-			if(bookItemModel.updateStatusToOff(bookItem.getCallnumber())) {
-				bookItems1.add(bookItem);
+		if(!callnumber.isEmpty()) {
+			BookItemModel bookItemModel = new BookItemModel();
+			BookItem bookItem = bookItemModel.findCallnumber(callnumber);
+			if(bookItem != null) {
+				if(bookItemModel.updateStatusToOff(bookItem.getCallnumber())) {
+					bookItems1.add(bookItem);
+				}
+			}else {
+				JOptionPane.showMessageDialog(null, "The book was borrowed. Please enter a different callnumber.");
 			}
 		}else {
-			JOptionPane.showMessageDialog(null, "The book was borrowed. Please enter a different callnumber.");
+			JOptionPane.showMessageDialog(null, "Please enter your callnumber.");
 		}
 		fillDataToTable1(bookItems1);
 	}
-	//event delete book from borrow list
 	//event click to delete book in BorrowList table
 	private void jbuttonDelete_actionPerformed(ActionEvent arg0) {
 		BookItemModel bookItemModel = new BookItemModel();
 		int selectedRow = jtableBorrowList.getSelectedRow();
-		BookItem bookItem = bookItems1.get(selectedRow);
-		if(bookItemModel.updateStatusToOn(bookItem.getCallnumber())) {
-			bookItems1.remove(selectedRow);
-			fillDataToTable1(bookItems1);
+		if(selectedRow != -1) {
+			BookItem bookItem = bookItems1.get(selectedRow);
+			if(bookItemModel.updateStatusToOn(bookItem.getCallnumber())) {
+				bookItems1.remove(selectedRow);
+				jtextFieldBorrowBook.setText("");
+				fillDataToTable1(bookItems1);
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Please select your book.");
 		}
 	}
 	//event click to create a checkout 
@@ -283,40 +298,45 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		if(bookItems1.size() > 0) {
 			//check if the user id field has value or not
 			if(!jtextFieldUserId.getText().isEmpty()) {
-				int user_id = Integer.parseInt(jtextFieldUserId.getText().toString());
-				CustomerModel customerModel = new CustomerModel();
-				Customer customer = customerModel.find(user_id);
-				//check if the user id is valid or not
-				if(customer != null) {
-					JFrameMain jFrameMain = (JFrameMain) this.getTopLevelAncestor();
-					int employee_id = jFrameMain.getEmployee_id();
-					CheckOut checkOut = new CheckOut();
-					Date date = new Date();
-					CheckOutModel checkOutModel = new CheckOutModel();
-					checkOut.setBorrow_date(date);
-					checkOut.setEmployee_id(employee_id);
-					int checkout_id = checkOutModel.createGetId(checkOut);
-					//check the checkout_id
-					if(checkout_id != 0) {
-						for(BookItem bookItem : bookItems1) {
-							Detail detail = new Detail();
-							detail.setCallnumber(bookItem.getCallnumber());
-							detail.setCheckout_id(checkout_id);
-							BookModel bookModel = new BookModel();
-							Book book = bookModel.find(bookItem.getIsbn());
-							detail.setPayment(book.getPrice());
-							detail.setUser_id(user_id);
-							DetailModel detailModel = new DetailModel();
-							detailModel.create(detail);
+				try {
+					int user_id = Integer.parseInt(jtextFieldUserId.getText().toString());
+					CustomerModel customerModel = new CustomerModel();
+					Customer customer = customerModel.find(user_id);
+					//check if the user id is valid or not
+					if(customer != null) {
+						JFrameMain jFrameMain = (JFrameMain) this.getTopLevelAncestor();
+						int employee_id = jFrameMain.getEmployee_id();
+						CheckOut checkOut = new CheckOut();
+						Date date = new Date();
+						CheckOutModel checkOutModel = new CheckOutModel();
+						checkOut.setBorrow_date(date);
+						checkOut.setEmployee_id(employee_id);
+						int checkout_id = checkOutModel.createGetId(checkOut);
+						//check the checkout_id
+						if(checkout_id != 0) {
+							for(BookItem bookItem : bookItems1) {
+								Detail detail = new Detail();
+								detail.setCallnumber(bookItem.getCallnumber());
+								detail.setCheckout_id(checkout_id);
+								BookModel bookModel = new BookModel();
+								Book book = bookModel.find(bookItem.getIsbn());
+								detail.setPayment(book.getPrice());
+								detail.setUser_id(user_id);
+								DetailModel detailModel = new DetailModel();
+								detailModel.create(detail);
+							}
+							JOptionPane.showMessageDialog(null, "Creating checkout successfully.");
+						//show message if the check out id is 0
+						}else {
+							JOptionPane.showMessageDialog(null, "Creating checkout failed.");
 						}
-						JOptionPane.showMessageDialog(null, "Creating checkout successfully.");
-					//show message if the check out id is 0
+					//if the user id is invalid => show message
 					}else {
-						JOptionPane.showMessageDialog(null, "Creating checkout failed.");
+						JOptionPane.showMessageDialog(null, "The user id is invalid.");
 					}
-				//if the user id is invalid => show message
-				}else {
-					JOptionPane.showMessageDialog(null, "The user id is invalid.");
+				} catch (Exception e) {
+					// TODO: handle exception
+					JOptionPane.showMessageDialog(null, "The user id only contains number.");
 				}
 			//if the field is empty => show message
 			}else {
@@ -325,6 +345,28 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		//if the borrowed book is empty => show message
 		}else {
 			JOptionPane.showMessageDialog(null, "Please select your book you want to borrow please.");
+		}
+	}
+	//event get all of book
+	private void jbuttonAll_actionPerformed(ActionEvent arg0) {
+		BookModel bookModel = new BookModel();
+		fillDataToTable(bookModel.findAll());
+	}
+	//event search ISBN
+	private void jbuttonSearch_actionPerformed(ActionEvent e) {
+		String isbn = jtextFieldISBN.getText().toString();
+		if(!isbn.isEmpty()) {
+			List<Book> books = new ArrayList<Book>();
+			BookModel bookModel = new BookModel();
+			Book book = bookModel.find(isbn);
+			if(book != null) {
+				books.add(book);
+				fillDataToTable(books);
+			}else {
+				JOptionPane.showMessageDialog(null, "You got the wrong isbn.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Please enter the isbn.");
 		}
 	}
 }
