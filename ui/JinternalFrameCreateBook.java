@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -185,6 +186,9 @@ public class JinternalFrameCreateBook extends JInternalFrame {
 					}
 					if(flag == 1) {
 						JOptionPane.showMessageDialog(null, book.getQuantity()+" bookItem created");
+//						JInternalFrameBook internalFrameBook = new JInternalFrameBook();
+//						internalFrameBook.autoFillDataToTable(bookModel.findAll());
+						this.setVisible(false);
 					} else {
 						JOptionPane.showMessageDialog(null, "Created Failed.");
 					}

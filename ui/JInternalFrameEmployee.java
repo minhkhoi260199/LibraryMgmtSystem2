@@ -231,7 +231,6 @@ public class JInternalFrameEmployee extends JInternalFrame {
 			if(!jtextFieldUsername.getText().isEmpty()) {
 				if(jtextFieldUsername.getText().length()<6) {
 					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
-					
 				}else {
 					if(jtextFieldPhone.getText().length()< 10){
 						JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");

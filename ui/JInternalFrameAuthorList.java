@@ -30,6 +30,8 @@ public class JInternalFrameAuthorList extends JInternalFrame {
 	private JTable jtableAuthor;
 	private JButton jbuttonDelete;
 	private JButton jbuttonUpdate;
+	private JTextField jtextFieldSearch;
+	private JButton jbtnSearch;
 
 	/**
 	 * Launch the application.
@@ -64,7 +66,7 @@ public class JInternalFrameAuthorList extends JInternalFrame {
 		getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 6, 426, 104);
+		scrollPane.setBounds(6, 59, 426, 104);
 		getContentPane().add(scrollPane);
 		
 		jtableAuthor = new JTable();
@@ -78,7 +80,7 @@ public class JInternalFrameAuthorList extends JInternalFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Author info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(6, 140, 426, 139);
+		panel.setBounds(6, 175, 426, 139);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -118,9 +120,33 @@ public class JInternalFrameAuthorList extends JInternalFrame {
 		jbuttonDelete.setBounds(308, 93, 90, 28);
 		panel.add(jbuttonDelete);
 		
+		jtextFieldSearch = new JTextField();
+		jtextFieldSearch.setBounds(6, 19, 246, 28);
+		getContentPane().add(jtextFieldSearch);
+		jtextFieldSearch.setColumns(10);
+		
+		jbtnSearch = new JButton("Search");
+		jbtnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbtnSearch_actionPerformed(arg0);
+			}
+		});
+		jbtnSearch.setBounds(264, 19, 98, 28);
+		getContentPane().add(jbtnSearch);
+		
 		loadJInternalFrame();
 	}
-	
+	// Search author name
+	private void jbtnSearch_actionPerformed(ActionEvent arg0) {
+		String kw = jtextFieldSearch.getText();
+		AuthorModel authorModel = new AuthorModel();
+		List<Author> authors = authorModel.search(kw);
+		if(authors.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Enter name author you want to find");
+		}else {
+			fillDataToJTable(authorModel.search(kw));
+		}
+	}
 	// Delete author name
 	private void jbuttonDelete_actionPerformed(ActionEvent e) {
 		int result = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Confirm", JOptionPane.YES_NO_OPTION);

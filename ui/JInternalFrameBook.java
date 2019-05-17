@@ -235,7 +235,7 @@ public class JInternalFrameBook extends JInternalFrame {
 		jbtnDelete.setEnabled(false);
 		jbuttonOpenBookItem.setEnabled(false);
 	}
-	private void autoFillDataToTable(List<Book> books) {
+	public void autoFillDataToTable(List<Book> books) {
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		defaultTableModel.addColumn("ISBN");
 		defaultTableModel.addColumn("Name");
