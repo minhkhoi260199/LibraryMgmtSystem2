@@ -178,6 +178,15 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		jbuttonCheckOut.setBounds(884, 506, 141, 37);
 		getContentPane().add(jbuttonCheckOut);
 		
+		JButton jbuttonTo = new JButton("To");
+		jbuttonTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jbuttonTo_actionPerformed(e);
+			}
+		});
+		jbuttonTo.setBounds(496, 257, 58, 29);
+		getContentPane().add(jbuttonTo);
+		
 		loadInternalJFrame();
 	}
 	//Global variable
@@ -231,6 +240,8 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		}else {
 			JOptionPane.showMessageDialog(null, "This book is not available right now.");
 		}
+	}
+	private void jbuttonTo_actionPerformed(ActionEvent e) {
 		fillDataToTable1(bookItems1);
 	}
 	//event click of BorrowList table to add data to jtextFieldBorrowBook
@@ -255,6 +266,7 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 		}
 		fillDataToTable1(bookItems1);
 	}
+	//event delete book from borrow list
 	//event click to delete book in BorrowList table
 	private void jbuttonDelete_actionPerformed(ActionEvent arg0) {
 		BookItemModel bookItemModel = new BookItemModel();
