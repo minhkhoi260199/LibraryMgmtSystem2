@@ -13,12 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.sun.org.apache.xerces.internal.parsers.CachingParserPool.ShadowedGrammarPool;
-import com.sun.prism.paint.Stop;
-
 import entities.Employee;
 import helper.BCrypt;
-import jdk.nashorn.internal.ir.BreakableNode;
 import models.EmployeeModel;
 
 import javax.swing.JLabel;

@@ -29,6 +29,10 @@ public class JFrameMain extends JFrame {
 	private JMenuItem mntmCustomer;
 	private JMenuItem mntmCheckOut;
 	private JMenuItem mntmCheckIn;
+	private JMenu mnBook;
+	private JMenuItem mntmCreateBook;
+	private JSeparator separator_1;
+	private JMenuItem mntmBookItemList;
 	private int employee_id;
 
 	
@@ -39,7 +43,6 @@ public class JFrameMain extends JFrame {
 	public void setEmployee_id(int employee_id) {
 		this.employee_id = employee_id;
 	}
-
 	/**
 	 * Launch the application.
 	 */
@@ -92,13 +95,35 @@ public class JFrameMain extends JFrame {
 		mnManage = new JMenu("Manage");
 		menuBar.add(mnManage);
 		
-		mntmBook = new JMenuItem("Book");
+		mnBook = new JMenu("Book");
+		mnManage.add(mnBook);
+		
+		mntmBook = new JMenuItem("Book List");
+		mnBook.add(mntmBook);
+		
+		mntmCreateBook = new JMenuItem("Create Book");
+		mntmCreateBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mntmCreateBook_actionPerformed(e);
+			}
+		});
+		mnBook.add(mntmCreateBook);
+		
+		separator_1 = new JSeparator();
+		mnBook.add(separator_1);
+		
+		mntmBookItemList = new JMenuItem("Book Item List");
+		mntmBookItemList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mntmBookItemList_actionPerformed(e);
+			}
+		});
+		mnBook.add(mntmBookItemList);
 		mntmBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mntmBook_actionPerformed(e);
 			}
 		});
-		mnManage.add(mntmBook);
 		
 		mntmCategory = new JMenuItem("Category");
 		mntmCategory.addActionListener(new ActionListener() {
@@ -178,5 +203,17 @@ public class JFrameMain extends JFrame {
 		JInternalFrameCheckOut jInternalFrameCheckOut = new JInternalFrameCheckOut();
 		jDesktopPaneMain.add(jInternalFrameCheckOut);
 		jInternalFrameCheckOut.setVisible(true);
+	}
+	
+	public void mntmCreateBook_actionPerformed(ActionEvent e) { 
+		JinternalFrameCreateBook jinternalFrameCreateBook = new JinternalFrameCreateBook();
+		jDesktopPaneMain.add(jinternalFrameCreateBook);
+		jinternalFrameCreateBook.setVisible(true);
+	}
+	
+	public void mntmBookItemList_actionPerformed(ActionEvent e) {
+		JinternalFrameListBookItem jinternalFrameListBookItem = new JinternalFrameListBookItem();
+		jDesktopPaneMain.add(jinternalFrameListBookItem);
+		jinternalFrameListBookItem.setVisible(true);
 	}
 }
