@@ -159,6 +159,17 @@ public class JFrameMain extends JFrame {
 			}
 		});
 		mnManage.add(mntmCustomer);
+		
+		JMenu mnReceiptList = new JMenu("Receipt List");
+		menuBar.add(mnReceiptList);
+		
+		JMenuItem mntmCheckoutList = new JMenuItem("Checkout List");
+		mntmCheckoutList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mntmCheckoutList_actionPerformed(arg0);
+			}
+		});
+		mnReceiptList.add(mntmCheckoutList);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -215,5 +226,11 @@ public class JFrameMain extends JFrame {
 		JinternalFrameListBookItem jinternalFrameListBookItem = new JinternalFrameListBookItem();
 		jDesktopPaneMain.add(jinternalFrameListBookItem);
 		jinternalFrameListBookItem.setVisible(true);
+	}
+	
+	public void mntmCheckoutList_actionPerformed(ActionEvent arg0) {
+		JInternalFrameCheckList jInternalFrameCheckList = new JInternalFrameCheckList();
+		jDesktopPaneMain.add(jInternalFrameCheckList);
+		jInternalFrameCheckList.setVisible(true);
 	}
 }
