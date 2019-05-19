@@ -55,6 +55,12 @@ public class JinternalFrameCategory extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JinternalFrameCategory() {
+		getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				mouseClickedOut(arg0);
+			}
+		});
 		setIconifiable(true);
 		setClosable(true);
 		setTitle("Manage Categories");
@@ -111,11 +117,20 @@ public class JinternalFrameCategory extends JInternalFrame {
 		getContentPane().add(jbtnDelete);
 
 		loadJInternalFrame();
+		
 	}
 	
 	private void loadJInternalFrame() {
 		CategoryModel categoryModel = new CategoryModel();
 		fillDatatoJTable(categoryModel.findAll());
+		
+		jbtnDelete.setEnabled(false);
+		jbtnUpdate.setEnabled(false);
+	}
+	private void mouseClickedOut(MouseEvent arg0) {
+		loadJInternalFrame();
+		jtextFieldCategoryName.setText("");
+		jbtnAddNew.setEnabled(true);
 		jbtnDelete.setEnabled(false);
 		jbtnUpdate.setEnabled(false);
 	}
@@ -125,19 +140,34 @@ public class JinternalFrameCategory extends JInternalFrame {
 		CategoryModel categoryModel = new CategoryModel();
 		Category category = categoryModel.find(id);
 		jtextFieldCategoryName.setText(category.getType());
-		jbtnAddNew.setEnabled(true);
+		jbtnAddNew.setEnabled(false);
 		jbtnDelete.setEnabled(true);
 		jbtnUpdate.setEnabled(true);
 	}
+
 	public void jbtnAddNew_actionPerformed(ActionEvent arg0) {
 		try {
 			CategoryModel categoryModel = new CategoryModel();
 			Category category = new Category();
-			category.setType(jtextFieldCategoryName.getText());
-			if (categoryModel.create(category)) {
-				JOptionPane.showMessageDialog(null, "Done");
-				fillDatatoJTable(categoryModel.findAll());
+			String type = jtextFieldCategoryName.getText().toLowerCase();
+			if(categoryModel.checkCategory(type)) {
+				if (jtextFieldCategoryName.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Pls enter name of category you want to add");
+				} else {
+					category.setType(jtextFieldCategoryName.getText());
+					if (categoryModel.create(category)) {
+						JOptionPane.showMessageDialog(null, "Done");
+						fillDatatoJTable(categoryModel.findAll());
+						jtextFieldCategoryName.setText("");
+					}else {
+						JOptionPane.showMessageDialog(null, "Failed");
+					}
+				}
+
+			}else {
+				JOptionPane.showMessageDialog(null, "Category already in the table");
 			}
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed");
 		}
@@ -153,6 +183,10 @@ public class JinternalFrameCategory extends JInternalFrame {
 			if (categoryModel.update(category)) {
 				JOptionPane.showMessageDialog(null, "Done");
 				fillDatatoJTable(categoryModel.findAll());
+				jbtnAddNew.setEnabled(true);
+				jbtnDelete.setEnabled(false);
+				jbtnUpdate.setEnabled(false);
+				jtextFieldCategoryName.setText("");
 			}else {
 				JOptionPane.showMessageDialog(null, "Failed");
 			}
@@ -172,6 +206,11 @@ public class JinternalFrameCategory extends JInternalFrame {
 				if(categoryModel.delete(category_id)) {
 					JOptionPane.showMessageDialog(null, "Done");
 					fillDatatoJTable(categoryModel.findAll());
+					jbtnAddNew.setEnabled(true);
+					jbtnDelete.setEnabled(false);
+					jbtnUpdate.setEnabled(false);
+					jtextFieldCategoryName.setText("");
+					
 				}else {
 					JOptionPane.showMessageDialog(null, "Failed");
 				}

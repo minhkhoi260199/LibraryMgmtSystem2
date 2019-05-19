@@ -96,6 +96,7 @@ public class AuthorModel {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
 				Author author = new Author();
+				author.setAuthor_id(resultSet.getInt("author_id"));
 				author.setName(resultSet.getString("name"));
 				authors.add(author);
 			}

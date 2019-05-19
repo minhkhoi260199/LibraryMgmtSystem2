@@ -134,19 +134,13 @@ public class BookItemModel {
 		}
 		return bookItem;
 	}
-	public List<BookItem> Search(int sort, String kw){
+	public List<BookItem> Search(String type, String kw){
 		List<BookItem> bookItems = new ArrayList<BookItem>();
 		try {
-			PreparedStatement preparedStatement = null;
-			if(sort==0) {
-				preparedStatement = ConnectDB.getConnection().prepareStatement("select * from bookitem where callnumber like ?");
+				PreparedStatement preparedStatement = ConnectDB.getConnection()
+						.prepareStatement("select * from bookitem where "+type+" like ?");
 				preparedStatement.setString(1, "%" + kw + "%");
-			} else if (sort==1) {
-				preparedStatement = ConnectDB.getConnection().prepareStatement("select * from bookitem where isbn like ?");
-				preparedStatement.setString(1, "%" + kw + "%");
-			} else {
-				JOptionPane.showMessageDialog(null, "Field unvalue!");
-			}
+			
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
 				BookItem bookItem = new BookItem();

@@ -4,14 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-
 import entities.Employee;
 import helper.BCrypt;
-import ui.JInternalFrameEmployee;
 
 public class EmployeeModel {
 
@@ -65,6 +59,25 @@ public class EmployeeModel {
 		return employees;
 	}
 	
+	public boolean checkInfo(String ql) {
+		boolean info = true;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select department from employee ");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				ql = "Quan ly".toLowerCase();
+				String ktd = resultSet.getString("ql");
+				if(ktd == ql) {
+					info = false;
+				}
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			info = false;
+		}
+		return info;
+	}
 	//Create account employee
 	public boolean create(Employee employee) {
 		boolean result = true;

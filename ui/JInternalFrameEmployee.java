@@ -62,16 +62,22 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInternalFrameEmployee() {
+		getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mouseClickedOut(e);
+			}
+		});
 		setTitle("Employee Info");
 		setClosable(true);
 		setBounds(100, 100, 644, 610);
 		getContentPane().setLayout(null);
-		
+
 		jtextFieldSearch = new JTextField();
 		jtextFieldSearch.setBounds(6, 6, 351, 33);
 		getContentPane().add(jtextFieldSearch);
 		jtextFieldSearch.setColumns(10);
-		
+
 		JButton jbtnSearch = new JButton("Search");
 		jbtnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -80,11 +86,11 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		});
 		jbtnSearch.setBounds(369, 6, 117, 33);
 		getContentPane().add(jbtnSearch);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(6, 51, 620, 192);
 		getContentPane().add(scrollPane);
-		
+
 		jTable = new JTable();
 		jTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -93,49 +99,49 @@ public class JInternalFrameEmployee extends JInternalFrame {
 			}
 		});
 		scrollPane.setViewportView(jTable);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Employee Info", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(6, 255, 620, 314);
 		getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("Employee Name: ");
 		lblNewLabel.setBounds(18, 25, 131, 29);
 		panel.add(lblNewLabel);
-		
+
 		jtextFieldName = new JTextField();
 		jtextFieldName.setBounds(150, 25, 408, 29);
 		panel.add(jtextFieldName);
 		jtextFieldName.setColumns(10);
-		
+
 		JLabel lblEmployeeAddress = new JLabel("Employee Address: ");
 		lblEmployeeAddress.setBounds(18, 146, 131, 29);
 		panel.add(lblEmployeeAddress);
-		
+
 		jtextFieldAddress = new JTextField();
 		jtextFieldAddress.setColumns(10);
 		jtextFieldAddress.setBounds(150, 146, 408, 29);
 		panel.add(jtextFieldAddress);
-		
+
 		JLabel lblEmployeePhone = new JLabel("Employee Phone: ");
 		lblEmployeePhone.setBounds(18, 187, 131, 29);
 		panel.add(lblEmployeePhone);
-		
+
 		jtextFieldPhone = new JTextField();
 		jtextFieldPhone.setColumns(10);
 		jtextFieldPhone.setBounds(150, 187, 408, 29);
 		panel.add(jtextFieldPhone);
-		
+
 		JLabel lblEmployeeDeparment = new JLabel("Employee Department: ");
 		lblEmployeeDeparment.setBounds(18, 227, 131, 29);
 		panel.add(lblEmployeeDeparment);
-		
+
 		jtextFieldDepartment = new JTextField();
 		jtextFieldDepartment.setColumns(10);
 		jtextFieldDepartment.setBounds(150, 227, 408, 29);
 		panel.add(jtextFieldDepartment);
-		
+
 		jbtnAdd = new JButton("Add");
 		jbtnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -144,16 +150,16 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		});
 		jbtnAdd.setBounds(150, 267, 90, 28);
 		panel.add(jbtnAdd);
-		
+
 		jbtnDelete = new JButton("Delete");
 		jbtnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				jbtnDelete_actionPerformed( e);
+				jbtnDelete_actionPerformed(e);
 			}
 		});
 		jbtnDelete.setBounds(252, 267, 90, 28);
 		panel.add(jbtnDelete);
-		
+
 		jbtnUpdate = new JButton("Update");
 		jbtnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -162,144 +168,190 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		});
 		jbtnUpdate.setBounds(354, 267, 90, 28);
 		panel.add(jbtnUpdate);
-		
+
 		JLabel lblUsername = new JLabel("Username");
 		lblUsername.setBounds(18, 65, 131, 29);
 		panel.add(lblUsername);
-		
+
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(18, 106, 131, 29);
 		panel.add(lblPassword);
-		
+
 		jtextFieldUsername = new JTextField();
 		jtextFieldUsername.setColumns(10);
 		jtextFieldUsername.setBounds(150, 65, 408, 29);
 		panel.add(jtextFieldUsername);
-		
+
 		jpasswordField = new JPasswordField();
 		jpasswordField.setBounds(150, 108, 408, 29);
 		panel.add(jpasswordField);
-		
+
 		jcomboBoxSearchType = new JComboBox();
 		jcomboBoxSearchType.setBounds(498, 6, 128, 33);
 		getContentPane().add(jcomboBoxSearchType);
-		
+
 		loadJInternalFrame();
 	}
-		
-	//Search on table
+
+	// Search on table
 	private void jbtnSearch_actionPerformed(ActionEvent e) {
-		String kw= jtextFieldSearch.getText();
+		String kw = jtextFieldSearch.getText().toLowerCase().trim();
 		EmployeeModel employeeModel = new EmployeeModel();
 		String type = (String) jcomboBoxSearchType.getSelectedItem().toString().toLowerCase();
-		List<Employee> employees = employeeModel.search(type,kw);
-		if(employees.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Change right type and enter keyword you want to find");
-		}else {
-			fillDatatoJTable(employeeModel.search(type,kw));
+		List<Employee> employees = employeeModel.search(type, kw);
+		if (employees.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Keyword you entered is not in the table or wrong type");
+		} else {
+			if (kw.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Pls enter keyword you want to find");
+			} else {
+				fillDatatoJTable(employeeModel.search(type, kw));
+			}
 		}
 	}
-	
-	//Delete employee
+
+	// Out mouse clicked
+	private void mouseClickedOut(MouseEvent e) {
+		loadJInternalFrame();
+		jbtnAdd.setEnabled(true);
+		jbtnDelete.setEnabled(false);
+		jbtnUpdate.setEnabled(false);
+		jtextFieldAddress.setText("");
+		jtextFieldDepartment.setText("");
+		jtextFieldName.setText("");
+		jtextFieldPhone.setText("");
+		jtextFieldUsername.setText("");
+		jpasswordField.setText("");
+	}
+
+	// Delete employee
 	private void jbtnDelete_actionPerformed(ActionEvent e) {
 		try {
-			int result = JOptionPane.showConfirmDialog(null, "Are U sure??", "Comfirm", JOptionPane.YES_NO_OPTION);
-			if(result == JOptionPane.YES_OPTION) {
-				int selectRow = jTable.getSelectedRow();
-				int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
-				EmployeeModel employeeModel = new EmployeeModel();
-				if (employeeModel.delete(employee_id)) {
-					JOptionPane.showMessageDialog(null, "Done");
-					fillDatatoJTable(employeeModel.findAll());
-				}else {
-					JOptionPane.showMessageDialog(null, "Failed");
+			EmployeeModel employeeModel = new EmployeeModel();
+			String ql = jtextFieldDepartment.getText().toLowerCase().trim();
+			if(employeeModel.checkInfo(ql)) {
+				int result = JOptionPane.showConfirmDialog(null, "Are U sure??", "Comfirm", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					int selectRow = jTable.getSelectedRow();
+					int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
+					
+					if (employeeModel.delete(employee_id)) {
+						JOptionPane.showMessageDialog(null, "Done");
+						fillDatatoJTable(employeeModel.findAll());
+						jbtnAdd.setEnabled(true);
+						jbtnDelete.setEnabled(false);
+						jbtnUpdate.setEnabled(false);
+						jtextFieldAddress.setText("");
+						jtextFieldDepartment.setText("");
+						jtextFieldName.setText("");
+						jtextFieldPhone.setText("");
+						jtextFieldUsername.setText("");
+						jpasswordField.setText("");
+					} else {
+						JOptionPane.showMessageDialog(null, "");
+					}
 				}
+			}else {
+				JOptionPane.showMessageDialog(null, "You can't delete Quan ly");
 			}
 			
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Failed");
 		}
 	}
-	
-	//Update employee
+
+	// Update employee
 	private void jbtnUpdate_actionPerformed(ActionEvent e) {
 		try {
 			int selectRow = jTable.getSelectedRow();
 			int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = employeeModel.find(employee_id);
-			if(!jtextFieldUsername.getText().isEmpty()) {
-				if(jtextFieldUsername.getText().length()<6) {
+			if (!jtextFieldUsername.getText().isEmpty()) {
+				if (jtextFieldUsername.getText().length() < 6) {
 					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
-				}else {
-					if(jtextFieldPhone.getText().length()< 10){
+				} else {
+					if (jtextFieldPhone.getText().length() < 10) {
 						JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");
-					}else {
-						employee.setUsername(jtextFieldUsername.getText());	
+					} else {
+						employee.setUsername(jtextFieldUsername.getText());
 						String password = String.valueOf(jpasswordField.getPassword());
 						employee.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
 						employee.setName(jtextFieldName.getText());
 						employee.setAddress(jtextFieldAddress.getText());
 						employee.setPhone(jtextFieldPhone.getText());
 						employee.setDepartment(jtextFieldDepartment.getText());
-						if(employeeModel.update(employee)) {
+						if (employeeModel.update(employee)) {
 							JOptionPane.showMessageDialog(null, "Done");
 							fillDatatoJTable(employeeModel.findAll());
-						}else {
+							jbtnAdd.setEnabled(true);
+							jbtnDelete.setEnabled(false);
+							jbtnUpdate.setEnabled(false);
+							jtextFieldAddress.setText("");
+							jtextFieldDepartment.setText("");
+							jtextFieldName.setText("");
+							jtextFieldPhone.setText("");
+							jtextFieldUsername.setText("");
+							jpasswordField.setText("");
+						} else {
 							JOptionPane.showMessageDialog(null, "Failed");
 						}
 					}
-					
+
 				}
 			}
-			
-			
+
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Failed");
 		}
 	}
-	
-	//create employee
+
+	// create employee
 	private void jbtnAdd_actionPerformed(ActionEvent e) {
 		try {
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = new Employee();
 			String password = String.valueOf(jpasswordField.getPassword());
-			if(jtextFieldName.getText().isEmpty() || jtextFieldAddress.getText().isEmpty() ||
-				jtextFieldPhone.getText().isEmpty() || jtextFieldDepartment.getText().isEmpty() ||
-				jtextFieldUsername.getText().isEmpty() || password.isEmpty()) {
+			if (jtextFieldName.getText().isEmpty() || jtextFieldAddress.getText().isEmpty()
+					|| jtextFieldPhone.getText().isEmpty() || jtextFieldDepartment.getText().isEmpty()
+					|| jtextFieldUsername.getText().isEmpty() || password.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Pls enter full information of employee");
-			}else {
-				if(jtextFieldUsername.getText().length()<6) {
+			} else {
+				if (jtextFieldUsername.getText().length() < 6) {
 					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
-				}else {
-					employee.setUsername(jtextFieldUsername.getText());	
+				} else {
+					employee.setUsername(jtextFieldUsername.getText());
 				}
 				employee.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
 				employee.setName(jtextFieldName.getText());
 				employee.setAddress(jtextFieldAddress.getText());
-				if(jtextFieldPhone.getText().length()< 10){
+				if (jtextFieldPhone.getText().length() < 10) {
 					JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");
-				}else {
+				} else {
 					employee.setPhone(jtextFieldPhone.getText());
 				}
-				
 				employee.setDepartment(jtextFieldDepartment.getText());
+				jtextFieldAddress.setText("");
+				jtextFieldDepartment.setText("");
+				jtextFieldName.setText("");
+				jtextFieldPhone.setText("");
+				jtextFieldUsername.setText("");
+				jpasswordField.setText("");
 			}
-			
+
 			if (employeeModel.create(employee)) {
 				JOptionPane.showMessageDialog(null, "Successfull");
 				fillDatatoJTable(employeeModel.findAll());
-			}else {
+			} else {
 				JOptionPane.showMessageDialog(null, "Failed to add new employee");
 			}
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Please try again!");
 		}
-		
+
 	}
-	
-	//fillDatatoJTable
+
+	// fillDatatoJTable
 	private void fillDatatoJTable(List<Employee> employees) {
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		defaultTableModel.addColumn("Employee_id");
@@ -308,24 +360,18 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		defaultTableModel.addColumn("Address");
 		defaultTableModel.addColumn("Phone");
 		defaultTableModel.addColumn("Department");
-		for(Employee employee : employees) {
-			defaultTableModel.addRow(new Object[] {
-					employee.getEmployee_id(),
-					employee.getName(),
-					employee.getUsername(),
-					employee.getAddress(),
-					employee.getPhone(),
-					employee.getDepartment()
-			});
+		for (Employee employee : employees) {
+			defaultTableModel.addRow(new Object[] { employee.getEmployee_id(), employee.getName(),
+					employee.getUsername(), employee.getAddress(), employee.getPhone(), employee.getDepartment() });
 		}
 		jTable.setModel(defaultTableModel);
 		jTable.getTableHeader().setReorderingAllowed(false);
 	}
-	
-	//MouseClick
+
+	// MouseClick
 	private void jTable_mouseClicked(MouseEvent e) {
 		int selectedRow = jTable.getSelectedRow();
-		int employee_id =Integer.parseInt(jTable.getValueAt(selectedRow, 0).toString()) ;
+		int employee_id = Integer.parseInt(jTable.getValueAt(selectedRow, 0).toString());
 		EmployeeModel employeeModel = new EmployeeModel();
 		Employee employee = employeeModel.find(employee_id);
 		jtextFieldUsername.setText(employee.getUsername());
@@ -333,13 +379,13 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		jtextFieldAddress.setText(employee.getAddress());
 		jtextFieldPhone.setText(employee.getPhone());
 		jtextFieldDepartment.setText(employee.getDepartment());
-		
-		jbtnAdd.setEnabled(true);
+
+		jbtnAdd.setEnabled(false);
 		jbtnDelete.setEnabled(true);
 		jbtnUpdate.setEnabled(true);
 	}
-	
-	//Load JInternalFrame
+
+	// Load JInternalFrame
 	private void loadJInternalFrame() {
 		EmployeeModel employeeModel = new EmployeeModel();
 		fillDatatoJTable(employeeModel.findAll());

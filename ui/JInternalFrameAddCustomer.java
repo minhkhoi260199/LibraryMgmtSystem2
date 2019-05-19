@@ -60,6 +60,12 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInternalFrameAddCustomer() {
+		getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mouseClickedOut(e);
+			}
+		});
 		setTitle("Customer");
 		setClosable(true);
 		setBounds(100, 100, 579, 507);
@@ -172,6 +178,16 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 		jbtnDelete.setEnabled(false);
 		jbtnUpdate.setEnabled(false);
 	}
+	//Mouse Click Out
+	private void mouseClickedOut(MouseEvent e) {
+		loadJInternalFrame();
+		jbtnAdd.setEnabled(true);
+		jbtnDelete.setEnabled(false);
+		jbtnUpdate.setEnabled(false);
+		jtextFieldName.setText("");
+		jtextFieldAddress.setText("");
+		jtextFieldPhone.setText("");
+	}
 	//MouseClick
 	private void jTable_mouseClicked(MouseEvent e) {
 		int selectedRow = jTable.getSelectedRow();
@@ -181,7 +197,7 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 		jtextFieldName.setText(customer.getName());
 		jtextFieldAddress.setText(customer.getAddress());
 		jtextFieldPhone.setText(customer.getPhone());
-		jbtnAdd.setEnabled(true);
+		jbtnAdd.setEnabled(false);
 		jbtnDelete.setEnabled(true);
 		jbtnUpdate.setEnabled(true);
 	}
@@ -192,9 +208,13 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 		String type = (String) jcomboBox.getSelectedItem().toString().toLowerCase();
 		List<Customer> customers = customerModel.search(type,kw);
 		if(customers.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Change right type and enter keyword you want to find");
+			JOptionPane.showMessageDialog(null, "Keyword you entered is not in the table or wrong type");
 		}else {
-			fillDatatoJTable(customerModel.search(type,kw));
+			if(kw.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Pls enter keyword you want to find");
+			}else {
+				fillDatatoJTable(customerModel.search(type,kw));
+			}
 		}
 			
 	}
@@ -209,6 +229,12 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 				if (customerModel.delete(user_id)) {
 					JOptionPane.showMessageDialog(null, "Done");
 					fillDatatoJTable(customerModel.findAll());
+					jbtnAdd.setEnabled(true);
+					jbtnDelete.setEnabled(false);
+					jbtnUpdate.setEnabled(false);
+					jtextFieldName.setText("");
+					jtextFieldAddress.setText("");
+					jtextFieldPhone.setText("");
 				}else {
 					JOptionPane.showMessageDialog(null, "Failed");
 				}
@@ -233,6 +259,12 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 				if(customerModel.update(customer)) {
 					JOptionPane.showMessageDialog(null, "Done");
 					fillDatatoJTable(customerModel.findAll());
+					jbtnAdd.setEnabled(true);
+					jbtnDelete.setEnabled(false);
+					jbtnUpdate.setEnabled(false);
+					jtextFieldName.setText("");
+					jtextFieldAddress.setText("");
+					jtextFieldPhone.setText("");
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Failed");
@@ -262,6 +294,9 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 					if(customerModel.create(customer)) {
 						JOptionPane.showMessageDialog(null, "Successfull");
 						fillDatatoJTable(customerModel.findAll());
+						jtextFieldName.setText("");
+						jtextFieldAddress.setText("");
+						jtextFieldPhone.setText("");
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Failed");

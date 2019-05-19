@@ -64,6 +64,24 @@ public class CategoryModel {
 		}
 		return categories;
 	}	
+	public boolean checkCategory(String type) {
+		boolean check = true;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select type from categories");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				String ktcategory = resultSet.getString(type);
+				if(ktcategory == type) {
+					check = false;
+				}
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			check = false;
+		}
+		return check;
+	}
 	public boolean create(Category category) {
 		boolean result = true;
 		try {
