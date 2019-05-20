@@ -66,7 +66,7 @@ public class EmployeeModel {
 					.prepareStatement("select department from employee ");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				ql = "Quan ly".toLowerCase();
+				ql = "root".toLowerCase();
 				String ktd = resultSet.getString("ql");
 				if(ktd == ql) {
 					info = false;
