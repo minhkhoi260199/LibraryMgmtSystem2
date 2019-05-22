@@ -58,25 +58,6 @@ public class EmployeeModel {
 		}
 		return employees;
 	}
-	public boolean checkInfo(String ql) {
-		boolean info = true;
-		try {
-			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select department from employee ");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
-				ql = "root".toLowerCase();
-				String ktd = resultSet.getString("ql");
-				if(ktd == ql) {
-					info = false;
-				}
-			}
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-			info = false;
-		}
-		return info;
-	}
 	//Create account employee
 	public boolean create(Employee employee) {
 		boolean result = true;
