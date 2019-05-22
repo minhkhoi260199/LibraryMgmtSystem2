@@ -129,4 +129,44 @@ public class CheckOutModel {
 		
 		return id;
 	}
+	public long countDB() {
+		long count = 0;
+		try {
+			String que = "Select count(*) from checkout";
+			Connection cn = ConnectDB.getConnection();
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(que);
+			while(rs.next()) {
+				count = rs.getLong(1);
+			}
+			rs.close();
+			st.close();
+			cn.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			count = 0;
+		}
+		return count;
+	}
+	public List<CheckOut> loadData(long page){
+		List<CheckOut> checkOuts = new ArrayList<CheckOut>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("Select * from checkout limit "+(page*20-20)+",20 ");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				CheckOut checkOut = new CheckOut();
+				checkOut.setCheckout_id(resultSet.getInt("checkout_id"));
+				checkOut.setBorrow_date(resultSet.getDate("borrow_date"));
+				checkOut.setEmployee_id(resultSet.getInt("employee_id"));
+				checkOuts.add(checkOut);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			checkOuts = null;
+		}
+		return checkOuts;
+	}
 }

@@ -234,6 +234,7 @@ public class JInternalFrameBook extends JInternalFrame {
 		jbtnUpdate.setEnabled(false);
 		jbtnDelete.setEnabled(false);
 		jbuttonOpenBookItem.setEnabled(false);
+		
 	}
 	public void autoFillDataToTable(List<Book> books) {
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
@@ -349,9 +350,13 @@ public class JInternalFrameBook extends JInternalFrame {
 				BookItemModel bookItemModel = new BookItemModel();
 				if(bookItemModel.deleteBookitemByISBN(isbn)) {
 					int flag = 0;
+					int totalQuantity = 0;
+					for(Book b : bookModel.findAll()) {
+						totalQuantity += b.getQuantity();
+					}
 					for(int i=1; i<=book.getQuantity(); i++) {
 						BookItem bookItem = new BookItem();
-						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+i;
+						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
 						bookItem.setCallnumber(callnumber);
 						bookItem.setIsbn(book.getIsbn());
 						bookItem.setStatus(0);

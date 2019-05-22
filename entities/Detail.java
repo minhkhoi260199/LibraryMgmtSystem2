@@ -12,6 +12,8 @@ public class Detail {
 	private int fee;
 	private Date return_date;
 	private int employee_id;
+	private int status;
+	
 	
 	
 	public Detail() {
@@ -19,7 +21,7 @@ public class Detail {
 		// TODO Auto-generated constructor stub
 	}
 	public Detail(int detail_id, int checkout_id, int user_id, String callnumber, int out_of_date, int payment, int fee,
-			Date return_date, int employee_id) {
+			Date return_date, int employee_id, int status) {
 		super();
 		this.detail_id = detail_id;
 		this.checkout_id = checkout_id;
@@ -30,6 +32,7 @@ public class Detail {
 		this.fee = fee;
 		this.return_date = return_date;
 		this.employee_id = employee_id;
+		this.status = status;
 	}
 	public int getDetail_id() {
 		return detail_id;
@@ -85,6 +88,15 @@ public class Detail {
 	public void setEmployee_id(int employee_id) {
 		this.employee_id = employee_id;
 	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	
+	
 	
 	
 }
