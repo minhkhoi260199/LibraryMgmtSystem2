@@ -169,12 +169,16 @@ public class JinternalFrameCreateBook extends JInternalFrame {
 				BookModel bookModel = new BookModel();
 				if(bookModel.create(book)) {
 					JOptionPane.showMessageDialog(null, "Book successfully Created.");
-				////Create bookItem by quantity ----------------------------------
+				////Create bookItem by quantity -----------------------------------------
 					BookItemModel bookItemModel = new BookItemModel();
 					int flag = 0;
+					int totalQuantity = 0;
+					for(Book b : bookModel.findAll()) {
+						totalQuantity += b.getQuantity();
+					}
 					for(int i=1; i<=book.getQuantity(); i++) {
 						BookItem bookItem = new BookItem();
-						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+i;
+						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
 						bookItem.setCallnumber(callnumber);
 						bookItem.setIsbn(book.getIsbn());
 						bookItem.setStatus(0);
