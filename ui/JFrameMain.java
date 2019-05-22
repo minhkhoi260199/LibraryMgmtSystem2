@@ -87,6 +87,11 @@ public class JFrameMain extends JFrame {
 		mnChecking.add(mntmCheckOut);
 		
 		mntmCheckIn = new JMenuItem("Check In");
+		mntmCheckIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mntmCheckIn_actionPerformed(e);
+			}
+		});
 		mnChecking.add(mntmCheckIn);
 		
 		mnDetail = new JMenu("Detail");
@@ -232,5 +237,11 @@ public class JFrameMain extends JFrame {
 		JInternalFrameCheckList jInternalFrameCheckList = new JInternalFrameCheckList();
 		jDesktopPaneMain.add(jInternalFrameCheckList);
 		jInternalFrameCheckList.setVisible(true);
+	}
+	
+	public void mntmCheckIn_actionPerformed(ActionEvent e) {
+		JInterFrameCheckIn jInterFrameCheckIn = new JInterFrameCheckIn();
+		jDesktopPaneMain.add(jInterFrameCheckIn);
+		jInterFrameCheckIn.setVisible(true);
 	}
 }
