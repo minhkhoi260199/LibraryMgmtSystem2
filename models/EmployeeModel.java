@@ -58,7 +58,6 @@ public class EmployeeModel {
 		}
 		return employees;
 	}
-	
 	public boolean checkInfo(String ql) {
 		boolean info = true;
 		try {
@@ -66,7 +65,7 @@ public class EmployeeModel {
 					.prepareStatement("select department from employee ");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
-				ql = "Quan ly".toLowerCase();
+				ql = "root".toLowerCase();
 				String ktd = resultSet.getString("ql");
 				if(ktd == ql) {
 					info = false;

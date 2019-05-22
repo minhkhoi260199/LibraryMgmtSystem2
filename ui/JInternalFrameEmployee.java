@@ -228,33 +228,26 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	private void jbtnDelete_actionPerformed(ActionEvent e) {
 		try {
 			EmployeeModel employeeModel = new EmployeeModel();
-			String ql = jtextFieldDepartment.getText().toLowerCase().trim();
-			if(employeeModel.checkInfo(ql)) {
-				int result = JOptionPane.showConfirmDialog(null, "Are U sure??", "Comfirm", JOptionPane.YES_NO_OPTION);
-				if (result == JOptionPane.YES_OPTION) {
-					int selectRow = jTable.getSelectedRow();
-					int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
-					
-					if (employeeModel.delete(employee_id)) {
-						JOptionPane.showMessageDialog(null, "Done");
-						fillDatatoJTable(employeeModel.findAll());
-						jbtnAdd.setEnabled(true);
-						jbtnDelete.setEnabled(false);
-						jbtnUpdate.setEnabled(false);
-						jtextFieldAddress.setText("");
-						jtextFieldDepartment.setText("");
-						jtextFieldName.setText("");
-						jtextFieldPhone.setText("");
-						jtextFieldUsername.setText("");
-						jpasswordField.setText("");
-					} else {
-						JOptionPane.showMessageDialog(null, "");
-					}
+			int result = JOptionPane.showConfirmDialog(null, "Are U sure??", "Comfirm", JOptionPane.YES_NO_OPTION);
+			if (result == JOptionPane.YES_OPTION) {
+				int selectRow = jTable.getSelectedRow();
+				int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString()); 
+				if (employeeModel.delete(employee_id)) {
+					JOptionPane.showMessageDialog(null, "Done");
+					fillDatatoJTable(employeeModel.findAll());
+					jbtnAdd.setEnabled(true);
+					jbtnDelete.setEnabled(false);
+					jbtnUpdate.setEnabled(false);
+					jtextFieldAddress.setText("");
+					jtextFieldName.setText("");
+					jtextFieldPhone.setText("");
+					jtextFieldUsername.setText("");
+					jpasswordField.setText("");
+					jtextFieldDepartment.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Failed");
 				}
-			}else {
-				JOptionPane.showMessageDialog(null, "You can't delete Quan ly");
 			}
-			
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Failed");
 		}
@@ -263,7 +256,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	// Update employee
 	private void jbtnUpdate_actionPerformed(ActionEvent e) {
 		try {
-			int selectRow = jTable.getSelectedRow();
+			int selectRow = jTable.getSelectedRow(); 
 			int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = employeeModel.find(employee_id);
