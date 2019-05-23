@@ -31,7 +31,7 @@ public class DetailModel {
 	public long countDB(int checkout_id) {
 		long count = 0;
 		try {
-			String que = "Select count(*) from detail where checkout_id = "+checkout_id+"";
+			String que = "Select count(*) from detail where checkout_id = "+checkout_id+" and status = 0";
 			Connection cn = ConnectDB.getConnection();
 			Statement st = cn.createStatement();
 			ResultSet rs = st.executeQuery(que);
@@ -133,5 +133,23 @@ public class DetailModel {
 			detail = null;
 		}
 		return detail;
+	}
+	public boolean changeCheckIn(Detail detail) {
+		boolean result = true;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("update detail set out_of_date = ?, fee = ?, return_date = ?, employee_id = ? where detail_id = ?");
+			preparedStatement.setInt(1, detail.getOut_of_date());
+			preparedStatement.setInt(2, detail.getFee());
+			preparedStatement.setDate(3, new java.sql.Date(detail.getReturn_date().getTime()));
+			preparedStatement.setInt(4, detail.getEmployee_id());
+			preparedStatement.setInt(5, detail.getDetail_id());
+			result = preparedStatement.executeUpdate() > 0;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			result = false;
+		}
+		return result;
 	}
 }

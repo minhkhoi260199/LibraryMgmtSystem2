@@ -1,6 +1,6 @@
 package entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Detail {
 	private int detail_id;

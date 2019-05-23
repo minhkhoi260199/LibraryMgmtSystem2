@@ -36,7 +36,7 @@ public class CheckOutModel {
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
 					.prepareStatement("select * from checkout where checkout_id = ?");
-			preparedStatement.setInt(0, id);
+			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if(resultSet.next()) {
 				checkOut = new CheckOut();
@@ -70,8 +70,9 @@ public class CheckOutModel {
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
 					.prepareStatement("update checkout set borrow_date = ?, employee_id = ? where checkout_id = ?");
-			preparedStatement.setDate(0, new java.sql.Date(checkOut.getBorrow_date().getTime()));
-			preparedStatement.setInt(1, checkOut.getEmployee_id());
+			preparedStatement.setDate(1, new java.sql.Date(checkOut.getBorrow_date().getTime()));
+			preparedStatement.setInt(2, checkOut.getEmployee_id());
+			preparedStatement.setInt(3, checkOut.getCheckout_id());
 			result = preparedStatement.executeUpdate() > 0;
 		} catch (Exception e) {
 			// TODO: handle exception
