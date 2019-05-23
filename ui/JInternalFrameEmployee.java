@@ -62,12 +62,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInternalFrameEmployee() {
-		getContentPane().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mouseClickedOut(e);
-			}
-		});
+
 		setTitle("Employee Info");
 		setClosable(true);
 		setBounds(100, 100, 644, 610);
@@ -186,6 +181,15 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		jpasswordField.setBounds(150, 108, 408, 29);
 		panel.add(jpasswordField);
 
+		JButton jbtnClear = new JButton("Clear");
+		jbtnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbtnClear_actionPerformed(arg0);
+			}
+		});
+		jbtnClear.setBounds(456, 268, 90, 28);
+		panel.add(jbtnClear);
+
 		jcomboBoxSearchType = new JComboBox();
 		jcomboBoxSearchType.setBounds(498, 6, 128, 33);
 		getContentPane().add(jcomboBoxSearchType);
@@ -210,8 +214,8 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		}
 	}
 
-	// Out mouse clicked
-	private void mouseClickedOut(MouseEvent e) {
+	// Clear text field
+	private void jbtnClear_actionPerformed(ActionEvent arg0) {
 		loadJInternalFrame();
 		jbtnAdd.setEnabled(true);
 		jbtnDelete.setEnabled(false);
@@ -231,7 +235,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 			int result = JOptionPane.showConfirmDialog(null, "Are U sure??", "Comfirm", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				int selectRow = jTable.getSelectedRow();
-				int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString()); 
+				int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
 				if (employeeModel.delete(employee_id)) {
 					JOptionPane.showMessageDialog(null, "Done");
 					fillDatatoJTable(employeeModel.findAll());
@@ -248,6 +252,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Failed");
 				}
 			}
+
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, "Failed");
 		}
@@ -256,7 +261,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 	// Update employee
 	private void jbtnUpdate_actionPerformed(ActionEvent e) {
 		try {
-			int selectRow = jTable.getSelectedRow(); 
+			int selectRow = jTable.getSelectedRow();
 			int employee_id = Integer.parseInt(jTable.getValueAt(selectRow, 0).toString());
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = employeeModel.find(employee_id);
@@ -306,12 +311,12 @@ public class JInternalFrameEmployee extends JInternalFrame {
 			Employee employee = new Employee();
 			String password = String.valueOf(jpasswordField.getPassword());
 			if (jtextFieldName.getText().isEmpty() || jtextFieldAddress.getText().isEmpty()
-					|| jtextFieldPhone.getText().isEmpty() || jtextFieldDepartment.getText().isEmpty()
-					|| jtextFieldUsername.getText().isEmpty() || password.isEmpty()) {
+					|| jtextFieldPhone.getText().isEmpty() || jtextFieldUsername.getText().isEmpty()
+					|| password.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Pls enter full information of employee");
 			} else {
-				if (jtextFieldUsername.getText().length() < 6) {
-					JOptionPane.showMessageDialog(null, "Username must more than 6 characters ");
+				if (jtextFieldUsername.getText().length() < 6 || jpasswordField.getPassword().length<6) {
+					JOptionPane.showMessageDialog(null, "Username and password must more than 6 characters ");
 				} else {
 					employee.setUsername(jtextFieldUsername.getText());
 				}
@@ -323,7 +328,7 @@ public class JInternalFrameEmployee extends JInternalFrame {
 				} else {
 					employee.setPhone(jtextFieldPhone.getText());
 				}
-				employee.setDepartment(jtextFieldDepartment.getText());
+				employee.setDepartment("Manage");
 				jtextFieldAddress.setText("");
 				jtextFieldDepartment.setText("");
 				jtextFieldName.setText("");
@@ -389,6 +394,8 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		defaultComboBoxModel.addElement("Department");
 		defaultComboBoxModel.addElement("Username");
 		jcomboBoxSearchType.setModel(defaultComboBoxModel);
+		jtextFieldDepartment.setEnabled(false);
+		;
 		jbtnDelete.setEnabled(false);
 		jbtnUpdate.setEnabled(false);
 	}
