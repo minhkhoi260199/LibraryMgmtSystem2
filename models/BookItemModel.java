@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 
 import entities.BookItem;
 
-public class BookItemModel {
+public class BookItemModel {			
 	
 	public boolean deleteBookitemByISBN(String isbn) {
 		boolean result = false;
@@ -181,5 +181,27 @@ public class BookItemModel {
 			result = false;
 		}
 		return true;
+	}
+	public BookItem findCallnumberBorrowed(String callnumber) {
+		BookItem bookItem = null;
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("select * from bookitem where callnumber = ? and status = 1");
+			preparedStatement.setString(1, callnumber);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				bookItem = new BookItem();
+				bookItem.setIsbn(resultSet.getString("isbn"));
+				bookItem.setCallnumber(resultSet.getString("callnumber"));
+				bookItem.setStatus(resultSet.getInt("status"));
+			}else {
+				bookItem = null;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			bookItem = null;
+		}
+		return bookItem;
 	}
 }

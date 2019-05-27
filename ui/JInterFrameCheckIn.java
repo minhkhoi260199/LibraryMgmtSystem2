@@ -18,8 +18,12 @@ import java.util.List;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import entities.Book;
+import entities.BookItem;
 import entities.CheckOut;
 import entities.Detail;
+import models.BookItemModel;
+import models.BookModel;
 import models.CheckOutModel;
 import models.DetailModel;
 
@@ -28,6 +32,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class JInterFrameCheckIn extends JInternalFrame {
 	private JTable jtableCheckOutList;
@@ -149,6 +155,12 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		getContentPane().add(scrollPane_1);
 		
 		jtableCheckIn = new JTable();
+		jtableCheckIn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				jtableCheckIn_mouseClicked(arg0);
+			}
+		});
 		scrollPane_1.setViewportView(jtableCheckIn);
 		
 		jbtnCheckIn = new JButton("Check In");
@@ -179,6 +191,26 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		});
 		jbuttonSelect.setBounds(588, 338, 53, 40);
 		getContentPane().add(jbuttonSelect);
+		
+		JLabel lblBookTitle = new JLabel("Book Title");
+		lblBookTitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblBookTitle.setBounds(681, 32, 90, 35);
+		getContentPane().add(lblBookTitle);
+		
+		jtextFieldTitle = new JTextField();
+		jtextFieldTitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		jtextFieldTitle.setColumns(10);
+		jtextFieldTitle.setBounds(783, 25, 199, 35);
+		getContentPane().add(jtextFieldTitle);
+		
+		jbtnDelete = new JButton("Delete");
+		jbtnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbtnDelete_actionPerformed(arg0);
+			}
+		});
+		jbtnDelete.setBounds(1034, 25, 90, 35);
+		getContentPane().add(jbtnDelete);
 		loadJInternalFrame();
 	}
 	long page = 1;
@@ -198,6 +230,8 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	private List<Detail> detailCheckOuts = new ArrayList<Detail>();
 	private JButton jbuttonSelect;
 	private JButton jbtnCheckIn;
+	private JTextField jtextFieldTitle;
+	private JButton jbtnDelete;
 	private void loadJInternalFrame() {
 		jbuttonNext.setEnabled(false);
 		jbuttonLast.setEnabled(false);
@@ -346,6 +380,8 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		}
 		if(result) {
 			JOptionPane.showMessageDialog(null, "CheckIn successfully");
+			detailCheckOuts.clear();
+			autofilltableCheckIn(detailCheckOuts);
 		}
 	}
 	//event submit information to search callnumber and userid to get detail id/ search by checkout_id to get 
@@ -431,6 +467,53 @@ public class JInterFrameCheckIn extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "The user id contains only number.");
 				}
 			}
+		}
+	}
+	//event show book title in text field when selecting a row in Checkin Table
+	private void jtableCheckIn_mouseClicked(MouseEvent arg0) {
+		int selectedRow = jtableCheckIn.getSelectedRow();
+		String callnum = jtableCheckIn.getValueAt(selectedRow, 3).toString();
+		BookItemModel bookItemModel = new BookItemModel();
+		BookItem bookItem = bookItemModel.findCallnumberBorrowed(callnum);
+		BookModel bookModel = new BookModel();
+		Book book = bookModel.find(bookItem.getIsbn());
+		jtextFieldTitle.setText(book.getName());
+	}
+	//
+	private void jbtnDelete_actionPerformed(ActionEvent arg0) {
+		if(jtableCheckIn.getSelectedRow() != -1) {
+			int selectedRow = jtableCheckIn.getSelectedRow();
+			int selected_detail_id = Integer.parseInt(jtableCheckIn.getValueAt(selectedRow, 0).toString());
+			int selected_checkout_id = Integer.parseInt(jtableCheckIn.getValueAt(selectedRow, 1).toString());
+			DetailModel detailModel = new DetailModel();
+			boolean result = detailModel.updateStt(0, selected_detail_id);
+			long count = detailModel.countDB(checkout_id);
+			System.out.println(count);
+			if(count != 0) {
+				if(count % 20 == 0) {
+					pageNum = count / 20;
+				}else {
+					pageNum = (count / 20) + 1;
+				}
+				page = 1;
+				System.out.println(pageNum);
+				jlabelPage.setText("1");
+				jlabelPageTotal.setText("1/" + pageNum);
+				jbuttonNext.setEnabled(true);
+				jbuttonLast.setEnabled(true);
+				jbuttonPrevious.setEnabled(true);
+				jbuttonToStart.setEnabled(true);
+				jlabelPage.setVisible(true);
+				jlabelPageTotal.setVisible(true);
+				jtextFieldTitle.setText("");
+				detailCheckOuts.remove(selectedRow);
+				autofilltableCheckIn(detailCheckOuts);
+				autofilltableCheckout(detailModel.loadData(1,checkout_id));
+			}else {
+				JOptionPane.showMessageDialog(null, "The checkout id is invalid.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Please select a book you want to remove.");
 		}
 	}
 }
