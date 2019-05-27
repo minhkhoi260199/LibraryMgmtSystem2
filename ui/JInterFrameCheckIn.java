@@ -195,13 +195,13 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		
 		JLabel lblBookTitle = new JLabel("Book Title");
 		lblBookTitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblBookTitle.setBounds(681, 32, 90, 35);
+		lblBookTitle.setBounds(777, 76, 90, 35);
 		getContentPane().add(lblBookTitle);
 		
 		jtextFieldTitle = new JTextField();
 		jtextFieldTitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jtextFieldTitle.setColumns(10);
-		jtextFieldTitle.setBounds(783, 25, 199, 35);
+		jtextFieldTitle.setBounds(870, 76, 199, 35);
 		getContentPane().add(jtextFieldTitle);
 		
 		jbtnDelete = new JButton("Delete");
@@ -210,7 +210,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbtnDelete_actionPerformed(arg0);
 			}
 		});
-		jbtnDelete.setBounds(1034, 25, 90, 35);
+		jbtnDelete.setBounds(1081, 76, 133, 35);
 		getContentPane().add(jbtnDelete);
 		loadJInternalFrame();
 	}
