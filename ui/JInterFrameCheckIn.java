@@ -59,12 +59,13 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInterFrameCheckIn() {
+		setClosable(true);
 		setTitle("CheckIn ");
-		setBounds(100, 100, 1249, 689);
+		setBounds(100, 100, 1235, 575);
 		getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 188, 561, 349);
+		scrollPane.setBounds(15, 126, 561, 349);
 		getContentPane().add(scrollPane);
 		
 		jtableCheckOutList = new JTable();
@@ -77,7 +78,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonToStart_actionPerformed(arg0);
 			}
 		});
-		jbuttonToStart.setBounds(23, 574, 90, 40);
+		jbuttonToStart.setBounds(15, 487, 90, 40);
 		getContentPane().add(jbuttonToStart);
 		
 		jbuttonPrevious = new JButton("<");
@@ -86,7 +87,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonPrevious_actionPerformed(arg0);
 			}
 		});
-		jbuttonPrevious.setBounds(124, 574, 53, 40);
+		jbuttonPrevious.setBounds(116, 487, 53, 40);
 		getContentPane().add(jbuttonPrevious);
 		
 		jbuttonLast = new JButton(">>");
@@ -95,7 +96,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonLast_actionPerformed(e);
 			}
 		});
-		jbuttonLast.setBounds(335, 574, 90, 40);
+		jbuttonLast.setBounds(327, 487, 90, 40);
 		getContentPane().add(jbuttonLast);
 		
 		jbuttonNext = new JButton(">");
@@ -104,41 +105,41 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonNext_actionPerformed(e);
 			}
 		});
-		jbuttonNext.setBounds(270, 574, 53, 40);
+		jbuttonNext.setBounds(262, 487, 53, 40);
 		getContentPane().add(jbuttonNext);
 		
 		jlabelPage = new JLabel("jlabelPage");
 		jlabelPage.setHorizontalAlignment(SwingConstants.CENTER);
 		jlabelPage.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		jlabelPage.setBounds(184, 574, 81, 40);
+		jlabelPage.setBounds(176, 487, 81, 40);
 		getContentPane().add(jlabelPage);
 		
 		jlabelPageTotal = new JLabel("jlabelPageTotal");
 		jlabelPageTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		jlabelPageTotal.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		jlabelPageTotal.setBounds(437, 574, 81, 40);
+		jlabelPageTotal.setBounds(429, 487, 147, 40);
 		getContentPane().add(jlabelPageTotal);
 		
-		JLabel lblCallnumber = new JLabel("Callnumber");
+		JLabel lblCallnumber = new JLabel("Callnumber :");
 		lblCallnumber.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCallnumber.setBounds(23, 32, 90, 35);
+		lblCallnumber.setBounds(23, 29, 90, 35);
 		getContentPane().add(lblCallnumber);
 		
 		jtextFieldCallnumber = new JTextField();
 		jtextFieldCallnumber.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jtextFieldCallnumber.setBounds(143, 25, 199, 35);
+		jtextFieldCallnumber.setBounds(125, 27, 199, 39);
 		getContentPane().add(jtextFieldCallnumber);
 		jtextFieldCallnumber.setColumns(10);
 		
-		JLabel lblUserId = new JLabel("User ID");
+		JLabel lblUserId = new JLabel("User ID :");
 		lblUserId.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblUserId.setBounds(23, 81, 90, 35);
+		lblUserId.setBounds(777, 29, 81, 35);
 		getContentPane().add(lblUserId);
 		
 		jtextFieldUserId = new JTextField();
 		jtextFieldUserId.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jtextFieldUserId.setColumns(10);
-		jtextFieldUserId.setBounds(143, 74, 199, 35);
+		jtextFieldUserId.setBounds(870, 29, 199, 35);
 		getContentPane().add(jtextFieldUserId);
 		
 		jbtnSubmit = new JButton("Submit");
@@ -147,11 +148,11 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbtnSubmit_actionPerformed(arg0);
 			}
 		});
-		jbtnSubmit.setBounds(394, 25, 90, 35);
+		jbtnSubmit.setBounds(1081, 29, 133, 35);
 		getContentPane().add(jbtnSubmit);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(653, 188, 561, 349);
+		scrollPane_1.setBounds(653, 126, 561, 349);
 		getContentPane().add(scrollPane_1);
 		
 		jtableCheckIn = new JTable();
@@ -169,18 +170,18 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbtnCheckIn_actionPerformed(arg0);
 			}
 		});
-		jbtnCheckIn.setBounds(1060, 574, 154, 40);
+		jbtnCheckIn.setBounds(1060, 487, 154, 40);
 		getContentPane().add(jbtnCheckIn);
 		
 		jtextFieldCheckOutId = new JTextField();
 		jtextFieldCheckOutId.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jtextFieldCheckOutId.setColumns(10);
-		jtextFieldCheckOutId.setBounds(143, 121, 199, 35);
+		jtextFieldCheckOutId.setBounds(516, 29, 199, 35);
 		getContentPane().add(jtextFieldCheckOutId);
 		
-		JLabel jlabelCheckOutId = new JLabel("Checkout ID");
+		JLabel jlabelCheckOutId = new JLabel("Checkout ID :");
 		jlabelCheckOutId.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelCheckOutId.setBounds(23, 128, 90, 35);
+		jlabelCheckOutId.setBounds(414, 29, 90, 35);
 		getContentPane().add(jlabelCheckOutId);
 		
 		jbuttonSelect = new JButton(">>");
@@ -189,7 +190,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonSelect_actionPerformed(e);
 			}
 		});
-		jbuttonSelect.setBounds(588, 338, 53, 40);
+		jbuttonSelect.setBounds(588, 259, 53, 40);
 		getContentPane().add(jbuttonSelect);
 		
 		JLabel lblBookTitle = new JLabel("Book Title");

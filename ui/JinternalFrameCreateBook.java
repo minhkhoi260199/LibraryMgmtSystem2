@@ -148,57 +148,68 @@ public class JinternalFrameCreateBook extends JInternalFrame {
 	private void jbtnCreateBook_actionPerformed(ActionEvent arg0) {
 		try {
 				//Get input data
-				Book book = new Book();
-				book.setIsbn(jtextFieldISBN.getText());
-				book.setName(jtextFieldBooktitle.getText());
-				book.setQuantity(Integer.parseInt(jtextFieldQuantity.getText().toString()));
-					//Get author
-					int selectedAuthorIndex = jcomboBoxAuthor.getSelectedIndex();
-					AuthorModel authorModel = new AuthorModel();
-					Author author = authorModel.findAll().get(selectedAuthorIndex);
-					//Get category
-					int selectedCategoryIndex = jcomboBoxCategory.getSelectedIndex();
-					CategoryModel categoryModel = new CategoryModel();
-					Category category = categoryModel.findAll().get(selectedCategoryIndex);
-				//
-				book.setCategory_id(category.getCategory_id());
-				book.setAuthor_id(author.getAuthor_id());
-				book.setPrice(Integer.parseInt(jtextFieldPrice.getText().toString()));
 				
-				//Create new book
-				BookModel bookModel = new BookModel();
-				if(bookModel.create(book)) {
-					JOptionPane.showMessageDialog(null, "Book successfully Created.");
-				////Create bookItem by quantity -----------------------------------------
-					BookItemModel bookItemModel = new BookItemModel();
-					int flag = 0;
-					int totalQuantity = 0;
-					for(Book b : bookModel.findAll()) {
-						totalQuantity += b.getQuantity();
-					}
-					for(int i=1; i<=book.getQuantity(); i++) {
-						BookItem bookItem = new BookItem();
-						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
-						bookItem.setCallnumber(callnumber);
-						bookItem.setIsbn(book.getIsbn());
-						bookItem.setStatus(0);
-						if(bookItemModel.createBookItem(bookItem)) {
-							flag = 1;
-						} else {
-							flag = 0;
+				if(Integer.parseInt(jtextFieldQuantity.getText().toString()) <0 ) {
+					JOptionPane.showMessageDialog(null, "The number of quantity must be positive");
+				}else {
+					if(Integer.parseInt(jtextFieldPrice.getText().toString()) <1000) {
+						JOptionPane.showMessageDialog(null, "The price must bigger 1000");
+					}else {
+						Book book = new Book();
+						book.setIsbn(jtextFieldISBN.getText());
+						book.setName(jtextFieldBooktitle.getText());
+						book.setQuantity(Integer.parseInt(jtextFieldQuantity.getText().toString()));
+							//Get author
+							int selectedAuthorIndex = jcomboBoxAuthor.getSelectedIndex();
+							AuthorModel authorModel = new AuthorModel();
+							Author author = authorModel.findAll().get(selectedAuthorIndex);
+							//Get category
+							int selectedCategoryIndex = jcomboBoxCategory.getSelectedIndex();
+							CategoryModel categoryModel = new CategoryModel();
+							Category category = categoryModel.findAll().get(selectedCategoryIndex);
+						//
+						book.setCategory_id(category.getCategory_id());
+						book.setAuthor_id(author.getAuthor_id());
+						book.setPrice(Integer.parseInt(jtextFieldPrice.getText().toString()));
+						
+						//Create new book
+						BookModel bookModel = new BookModel();
+						if(bookModel.create(book)) {
+							JOptionPane.showMessageDialog(null, "Book successfully Created.");
+						////Create bookItem by quantity -----------------------------------------
+							BookItemModel bookItemModel = new BookItemModel();
+							int flag = 0;
+							int totalQuantity = 0;
+							for(Book b : bookModel.findAll()) {
+								totalQuantity += b.getQuantity();
+							}
+							for(int i=1; i<=book.getQuantity(); i++) {
+								BookItem bookItem = new BookItem();
+								String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
+								bookItem.setCallnumber(callnumber);
+								bookItem.setIsbn(book.getIsbn());
+								bookItem.setStatus(0);
+								if(bookItemModel.createBookItem(bookItem)) {
+									flag = 1;
+								} else {
+									flag = 0;
+								}
+							}
+							if(flag == 1) {
+								JOptionPane.showMessageDialog(null, book.getQuantity()+" bookItem created");
+//								JInternalFrameBook internalFrameBook = new JInternalFrameBook();
+//								internalFrameBook.autoFillDataToTable(bookModel.findAll());
+								this.setVisible(false);
+							} else {
+								JOptionPane.showMessageDialog(null, "Created Failed.");
+							}
+						}else {
+							JOptionPane.showMessageDialog(null, "Created Failed.");
 						}
 					}
-					if(flag == 1) {
-						JOptionPane.showMessageDialog(null, book.getQuantity()+" bookItem created");
-//						JInternalFrameBook internalFrameBook = new JInternalFrameBook();
-//						internalFrameBook.autoFillDataToTable(bookModel.findAll());
-						this.setVisible(false);
-					} else {
-						JOptionPane.showMessageDialog(null, "Created Failed.");
-					}
-				}else {
-					JOptionPane.showMessageDialog(null, "Created Failed.");
+					
 				}
+				
 			} catch (Exception e2) {
 				// TODO: handle exception
 				System.err.println(e2.getMessage());
