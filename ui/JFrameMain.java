@@ -8,10 +8,15 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import entities.Employee;
+import models.EmployeeModel;
+
 import javax.swing.JDesktopPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
@@ -186,34 +191,73 @@ public class JFrameMain extends JFrame {
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 	
+	public boolean getDepartment(int employee_id){
+		boolean result = false;
+		try {
+			EmployeeModel employeeModel = new EmployeeModel();
+			Employee employee = new Employee();
+			employee= employeeModel.find(employee_id);
+			System.out.println(employee.getDepartment());
+			if (employee.getDepartment().equalsIgnoreCase("root")) {
+				result = true;
+			}else{
+				result = false;
+			};
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		return result;
+	}
+	
 	public void mntmBook_actionPerformed(ActionEvent e) {
 		JInternalFrameBook jInternalFrameBook = new JInternalFrameBook();
 		jDesktopPaneMain.add(jInternalFrameBook);
-		jInternalFrameBook.setVisible(true);
+		if(getDepartment(employee_id)) {
+			jInternalFrameBook.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmCategory_actionPerformed(ActionEvent e) {
 		JinternalFrameCategory jinternalFrameCategory = new JinternalFrameCategory();
 		jDesktopPaneMain.add(jinternalFrameCategory);
-		jinternalFrameCategory.setVisible(true);
+		if(getDepartment(employee_id)) {
+			jinternalFrameCategory.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmAuthor_actionPerformed(ActionEvent e) {
 		JInternalFrameAuthorList jInternalFrameAuthorList = new JInternalFrameAuthorList();
 		jDesktopPaneMain.add(jInternalFrameAuthorList);
-		jInternalFrameAuthorList.setVisible(true);
+		if(getDepartment(employee_id)) {
+			jInternalFrameAuthorList.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmEmployee_actionPerformed(ActionEvent e) {
 		JInternalFrameEmployee jInternalFrameEmployee = new JInternalFrameEmployee();
 		jDesktopPaneMain.add(jInternalFrameEmployee);
-		jInternalFrameEmployee.setVisible(true);
+		if(getDepartment(employee_id)) {
+			jInternalFrameEmployee.setVisible(true);			
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmCustomer_actionPerformed(ActionEvent e) {
 		JInternalFrameAddCustomer jInternalFrameAddCustomer = new JInternalFrameAddCustomer();
 		jDesktopPaneMain.add(jInternalFrameAddCustomer);
-		jInternalFrameAddCustomer.setVisible(true);
+		if(getDepartment(employee_id)) {
+			jInternalFrameAddCustomer.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmCheckOut_actionPerformed(ActionEvent e) {
@@ -225,7 +269,11 @@ public class JFrameMain extends JFrame {
 	public void mntmCreateBook_actionPerformed(ActionEvent e) { 
 		JinternalFrameCreateBook jinternalFrameCreateBook = new JinternalFrameCreateBook();
 		jDesktopPaneMain.add(jinternalFrameCreateBook);
-		jinternalFrameCreateBook.setVisible(true);
+		if(getDepartment(employee_id)) {
+			jinternalFrameCreateBook.setVisible(true);
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmBookItemList_actionPerformed(ActionEvent e) {
