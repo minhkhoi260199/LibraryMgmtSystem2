@@ -152,4 +152,51 @@ public class DetailModel {
 		}
 		return result;
 	}
+	public long countDBforDetailList() {
+		long count = 0;
+		try {
+			String que = "Select count(*) from detail";
+			Connection cn = ConnectDB.getConnection();
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery(que);
+			while(rs.next()) {
+				count = rs.getLong(1);
+			}
+			rs.close();
+			st.close();
+			cn.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			count = 0;
+		}
+		return count;
+	}
+	public List<Detail> loadDataDetail(long page){
+		List<Detail> details = new ArrayList<Detail>();
+		try {
+			PreparedStatement preparedStatement = ConnectDB.getConnection()
+					.prepareStatement("Select * from detail order by status ASC, detail_id ASC limit "+(page*20-20)+",20");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()) {
+				Detail detail = new Detail();
+				detail.setDetail_id(resultSet.getInt("detail_id"));
+				detail.setCheckout_id(resultSet.getInt("checkout_id"));
+				detail.setUser_id(resultSet.getInt("user_id"));
+				detail.setCallnumber(resultSet.getString("callnumber"));
+				detail.setPayment(resultSet.getInt("payment"));
+				detail.setOut_of_date(resultSet.getInt("out_of_date"));
+				detail.setFee(resultSet.getInt("fee"));
+				detail.setReturn_date(resultSet.getDate("return_date"));
+				detail.setEmployee_id(resultSet.getInt("employee_id"));
+				detail.setStatus(resultSet.getInt("status"));
+				details.add(detail);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.err.println(e.getMessage());
+			details = null;
+		}
+		return details;
+	}
 }

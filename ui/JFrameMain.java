@@ -98,6 +98,14 @@ public class JFrameMain extends JFrame {
 		mnDetail = new JMenu("Detail");
 		menuBar.add(mnDetail);
 		
+		JMenuItem jmenuItemDetailList = new JMenuItem("Detail List");
+		jmenuItemDetailList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jmenuItemDetailList_actionPerformed(arg0);
+			}
+		});
+		mnDetail.add(jmenuItemDetailList);
+		
 		mnManage = new JMenu("Manage");
 		menuBar.add(mnManage);
 		
@@ -244,5 +252,11 @@ public class JFrameMain extends JFrame {
 		JInterFrameCheckIn jInterFrameCheckIn = new JInterFrameCheckIn();
 		jDesktopPaneMain.add(jInterFrameCheckIn);
 		jInterFrameCheckIn.setVisible(true);
+	}
+	
+	public void jmenuItemDetailList_actionPerformed(ActionEvent arg0) {
+		JInternalFrameDetailList jInternalFrameDetailList = new JInternalFrameDetailList();
+		jDesktopPaneMain.add(jInternalFrameDetailList);
+		jInternalFrameDetailList.setVisible(true);
 	}
 }

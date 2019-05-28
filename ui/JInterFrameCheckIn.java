@@ -480,7 +480,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		Book book = bookModel.find(bookItem.getIsbn());
 		jtextFieldTitle.setText(book.getName());
 	}
-	//
+	//function delete picked detail
 	private void jbtnDelete_actionPerformed(ActionEvent arg0) {
 		if(jtableCheckIn.getSelectedRow() != -1) {
 			int selectedRow = jtableCheckIn.getSelectedRow();
