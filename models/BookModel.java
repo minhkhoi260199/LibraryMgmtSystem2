@@ -95,6 +95,7 @@ public class BookModel {
 				book.setAuthor_id(resultSet.getInt("author_id"));
 				book.setCategory_id(resultSet.getInt("category_id"));
 				book.setQuantity(resultSet.getInt("quantity"));
+				book.setPrice(resultSet.getInt("price"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

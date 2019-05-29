@@ -15,6 +15,9 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class JInternalFrameDetailList extends JInternalFrame {
 	private JTable jtableDetail;
@@ -56,23 +59,44 @@ public class JInternalFrameDetailList extends JInternalFrame {
 		scrollPane.setViewportView(jtableDetail);
 		
 		jbuttonBack = new JButton("Back");
+		jbuttonBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonBack_actionPerformed(arg0);
+			}
+		});
 		jbuttonBack.setBounds(340, 539, 81, 41);
 		getContentPane().add(jbuttonBack);
 		
 		jbuttonNext = new JButton("Next");
+		jbuttonNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonNext_actionPerformed(arg0);
+			}
+		});
 		jbuttonNext.setBounds(520, 539, 81, 41);
 		getContentPane().add(jbuttonNext);
 		
 		jlabelPage = new JLabel("New label");
+		jlabelPage.setHorizontalAlignment(SwingConstants.CENTER);
 		jlabelPage.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jlabelPage.setBounds(442, 539, 55, 41);
 		getContentPane().add(jlabelPage);
 		
 		jbuttonLast = new JButton("Last");
+		jbuttonLast.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonLast_actionPerformed(arg0);
+			}
+		});
 		jbuttonLast.setBounds(629, 539, 81, 41);
 		getContentPane().add(jbuttonLast);
 		
 		jbuttonFirst = new JButton("First");
+		jbuttonFirst.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbuttonFirst_actionPerformed(arg0);
+			}
+		});
 		jbuttonFirst.setBounds(231, 539, 81, 41);
 		getContentPane().add(jbuttonFirst);
 		loadJInternalFrame();
@@ -133,5 +157,33 @@ public class JInternalFrameDetailList extends JInternalFrame {
 		}
 		jtableDetail.setModel(defaultTableModel);
 		jtableDetail.getTableHeader().setReorderingAllowed(false);
+	}
+	private void jbuttonBack_actionPerformed(ActionEvent arg0) {
+		if(page > 1) {
+			page --;
+			DetailModel detailModel = new DetailModel();
+			jlabelPage.setText(page + "/" + pageNum);
+			autoloadtabledate(detailModel.loadDataDetail(page));
+		}
+	}
+	private void jbuttonNext_actionPerformed(ActionEvent arg0) {
+		if(page < pageNum) {
+			page ++;
+			DetailModel detailModel = new DetailModel();
+			jlabelPage.setText(page +"/"+ pageNum);
+			autoloadtabledate(detailModel.loadDataDetail(page));
+		}
+	}
+	private void jbuttonFirst_actionPerformed(ActionEvent arg0) {
+		page = 1;
+		DetailModel detailModel = new DetailModel();
+		jlabelPage.setText(page +"/"+ pageNum);
+		autoloadtabledate(detailModel.loadDataDetail(page));
+	}
+	private void jbuttonLast_actionPerformed(ActionEvent arg0) {
+		page = pageNum;
+		DetailModel detailModel = new DetailModel();
+		jlabelPage.setText(page +"/"+ pageNum);
+		autoloadtabledate(detailModel.loadDataDetail(page));
 	}
 }

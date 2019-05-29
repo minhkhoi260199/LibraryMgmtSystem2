@@ -348,9 +348,15 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		//get current date.
 		Date date = new Date();
 		boolean result = false;
+		int sumFee = 0;
+		int sumPayment = 0;
+		int sumOutOfDate = 0;
+		int sumBook = 0;
 		for(Detail detail : detailCheckOuts) {
+			sumBook ++;
 			CheckOutModel checkOutModel = new CheckOutModel();
 			CheckOut checkOut = checkOutModel.find(detail.getCheckout_id());
+			sumPayment = sumPayment + detail.getPayment();
 			Date borrow_date = checkOut.getBorrow_date();
 			if(date.compareTo(borrow_date)>0) {
 				long d1 = borrow_date.getTime();
@@ -362,8 +368,10 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				if(out_of_date < 0) {
 					out_of_date = 0;
 				};
+				sumOutOfDate = sumOutOfDate + out_of_date;
 				//calculate fee
 				int fee = feePerDay * out_of_date;
+				sumFee = sumFee + fee;
 				//create new detail Object to add information in order to update.
 				Detail detail2 = new Detail();
 				detail2.setDetail_id(detail.getDetail_id());
@@ -380,7 +388,20 @@ public class JInterFrameCheckIn extends JInternalFrame {
 			}
 		}
 		if(result) {
-			JOptionPane.showMessageDialog(null, "CheckIn successfully");
+			int payBack = 0;
+			int extra = 0;
+			String str = "";
+			if(sumPayment >= sumFee) {
+				payBack = sumPayment - sumFee;
+				str = "Total of returned books: "+sumBook+" books \nOut of date: " + sumOutOfDate + " days \nFee: " 
+								+ sumFee + "\nPayment: " + sumPayment + "\nPayback: " +payBack;
+			}else {
+				extra = sumFee - sumPayment;
+				str = "Total of returned books: "+sumBook+" books \nOut of date: " + sumOutOfDate + " days \nFee: " 
+						+ sumFee + "\nPayment: " + sumPayment + "\nExtra: " + extra;
+			}
+//			String str = "Total of returned books: "+sumBook+" books \nOut of date: " + sumOutOfDate + " days \nFee: " + sumFee + "\nPayment: " + sumPayment;
+			JOptionPane.showMessageDialog(null, str);
 			detailCheckOuts.clear();
 			autofilltableCheckIn(detailCheckOuts);
 		}
