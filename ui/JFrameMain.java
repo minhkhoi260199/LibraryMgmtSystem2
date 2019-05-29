@@ -254,11 +254,11 @@ public class JFrameMain extends JFrame {
 		JInternalFrameEmployee jInternalFrameEmployee = new JInternalFrameEmployee();
 		jDesktopPaneMain.add(jInternalFrameEmployee);
 		jInternalFrameEmployee.setVisible(true);	
-//		if(getDepartment(employee_id)) {
-//			jInternalFrameEmployee.setVisible(true);			
-//		} else {
-//			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
-//		}
+		if(getDepartment(employee_id)) {
+			jInternalFrameEmployee.setVisible(true);			
+		} else {
+			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+		}
 	}
 	
 	public void mntmCustomer_actionPerformed(ActionEvent e) {

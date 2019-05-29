@@ -411,12 +411,15 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	//event submit information to search callnumber and userid to get detail id/ search by checkout_id to get 
 	//list of borrowed book in detail table
 	private void jbtnSubmit_actionPerformed(ActionEvent arg0) {
+		
 		if(jtextFieldCallnumber.getText().isEmpty() && jtextFieldUserId.getText().isEmpty()) {
+			
 			if(!jtextFieldCheckOutId.getText().isEmpty()) {
 				try {
 					checkout_id = Integer.parseInt(jtextFieldCheckOutId.getText().toString());
 					DetailModel detailModel = new DetailModel();
 					long count = detailModel.countDB(checkout_id);
+					System.out.println(count);
 					if(count != 0) {
 						if(count % 20 == 0) {
 							pageNum = count / 20;
@@ -463,6 +466,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 						checkout_id = Integer.parseInt(jtextFieldCheckOutId.getText().toString());
 //						DetailModel detailModel = new DetailModel();
 						long count = detailModel.countDB(checkout_id);
+						System.out.println(count);
 						if(count != 0) {
 							if(count % 20 == 0) {
 								pageNum = count / 20;
