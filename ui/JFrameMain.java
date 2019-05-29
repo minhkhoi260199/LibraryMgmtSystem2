@@ -213,7 +213,7 @@ public class JFrameMain extends JFrame {
 			};
 			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			JOptionPane.showMessageDialog(null, "Login now !");
 		}
 		return result;
 	}
@@ -251,11 +251,12 @@ public class JFrameMain extends JFrame {
 	public void mntmEmployee_actionPerformed(ActionEvent e) {
 		JInternalFrameEmployee jInternalFrameEmployee = new JInternalFrameEmployee();
 		jDesktopPaneMain.add(jInternalFrameEmployee);
-		if(getDepartment(employee_id)) {
-			jInternalFrameEmployee.setVisible(true);			
-		} else {
-			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
-		}
+		jInternalFrameEmployee.setVisible(true);	
+//		if(getDepartment(employee_id)) {
+//			jInternalFrameEmployee.setVisible(true);			
+//		} else {
+//			JOptionPane.showMessageDialog(null, "You have no access to this frame !");
+//		}
 	}
 	
 	public void mntmCustomer_actionPerformed(ActionEvent e) {

@@ -379,7 +379,11 @@ public class JInternalFrameEmployee extends JInternalFrame {
 		jtextFieldDepartment.setText(employee.getDepartment());
 
 		jbtnAdd.setEnabled(false);
-		jbtnDelete.setEnabled(true);
+		if(employee.getDepartment().equalsIgnoreCase("root")) {
+			jbtnDelete.setEnabled(false);
+		} else {
+			jbtnDelete.setEnabled(true);
+		}
 		jbtnUpdate.setEnabled(true);
 	}
 

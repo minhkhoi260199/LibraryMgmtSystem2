@@ -51,6 +51,8 @@ public class JInternalFrameBook extends JInternalFrame {
 	private JComboBox jcomboBoxAuthor;
 	private JComboBox jcomboBoxCategory;
 	private JButton jbuttonOpenBookItem;
+	private JComboBox jcomboBoxFillter;
+	private JLabel lblBy;
 
 	/**
 	 * Launch the application.
@@ -194,7 +196,7 @@ public class JInternalFrameBook extends JInternalFrame {
 				btnSearch_actionPerformed(arg0);
 			}
 		});
-		btnSearch.setBounds(431, 9, 100, 35);
+		btnSearch.setBounds(406, 12, 100, 35);
 		getContentPane().add(btnSearch);
 		
 		lblSearchBookTitle = new JLabel("Search book title");
@@ -208,8 +210,16 @@ public class JInternalFrameBook extends JInternalFrame {
 				jbtnAll_actionPerformed(e);
 			}
 		});
-		jbtnAll.setBounds(606, 10, 100, 35);
+		jbtnAll.setBounds(687, 12, 100, 35);
 		getContentPane().add(jbtnAll);
+		
+		jcomboBoxFillter = new JComboBox();
+		jcomboBoxFillter.setBounds(553, 11, 100, 34);
+		getContentPane().add(jcomboBoxFillter);
+		
+		lblBy = new JLabel("by:");
+		lblBy.setBounds(516, 21, 27, 14);
+		getContentPane().add(lblBy);
 		loadInternalJFrame();
 	}
 	private void loadInternalJFrame() {
@@ -234,7 +244,13 @@ public class JInternalFrameBook extends JInternalFrame {
 		jbtnUpdate.setEnabled(false);
 		jbtnDelete.setEnabled(false);
 		jbuttonOpenBookItem.setEnabled(false);
-		
+		//Seach combobox
+		DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>();
+		comboBoxModel.addElement("Title");
+		comboBoxModel.addElement("ISBN");
+		comboBoxModel.addElement("Category");
+		comboBoxModel.addElement("Author");
+		jcomboBoxFillter.setModel(comboBoxModel);
 	}
 	public void autoFillDataToTable(List<Book> books) {
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
@@ -251,7 +267,7 @@ public class JInternalFrameBook extends JInternalFrame {
 			Category category = categoryModel.find(book.getCategory_id());
 			defaultTableModel.addRow(new Object[] {
 					book.getIsbn(),
-					book.getName(),
+					book.getTitle(),
 					author.getName(),
 					category.getType(),
 					book.getQuantity(),
@@ -291,7 +307,7 @@ public class JInternalFrameBook extends JInternalFrame {
 //		int au_id = book.getAuthor_id() - 1;
 		jcomboBoxCategory.setSelectedIndex(cate_id);
 		jcomboBoxAuthor.setSelectedIndex(au_id);
-		jtextFieldName.setText(book.getName().toString());
+		jtextFieldName.setText(book.getTitle().toString());
 		jtextFieldQuantity.setText(String.valueOf(book.getQuantity()));
 		jbuttonOpenBookItem.setEnabled(true);
 		jbtnUpdate.setEnabled(true);
@@ -300,8 +316,9 @@ public class JInternalFrameBook extends JInternalFrame {
 	}
 	private void btnSearch_actionPerformed(ActionEvent arg0) {
 		String keyword = jtextFieldSearch.getText();
+		String type = (String) jcomboBoxFillter.getSelectedItem().toString().toLowerCase(); // noi chuoi
 		BookModel bookModel = new BookModel();
-		List<Book> books = bookModel.search(keyword);
+		List<Book> books = bookModel.search(type, keyword);
 		jtextFieldName.setText("");
 		jtextFieldQuantity.setText("");
 		jtextFieldSearch.setText("");
@@ -328,7 +345,7 @@ public class JInternalFrameBook extends JInternalFrame {
 			String isbn = jtableBook.getValueAt(selectedRow, 0).toString();
 			BookModel bookModel = new BookModel();
 			Book book = bookModel.find(isbn);
-			book.setName(jtextFieldName.getText().toString());
+			book.setTitle(jtextFieldName.getText().toString());
 			book.setQuantity(Integer.parseInt(jtextFieldQuantity.getText().toString()));
 			//get the index of the author selected in the combo box
 			int selectedIndex = jcomboBoxAuthor.getSelectedIndex();
@@ -356,7 +373,7 @@ public class JInternalFrameBook extends JInternalFrame {
 					}
 					for(int i=1; i<=book.getQuantity(); i++) {
 						BookItem bookItem = new BookItem();
-						String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
+						String callnumber = book.getTitle().charAt(0)+""+book.getTitle().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
 						bookItem.setCallnumber(callnumber);
 						bookItem.setIsbn(book.getIsbn());
 						bookItem.setStatus(0);

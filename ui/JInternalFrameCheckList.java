@@ -26,6 +26,7 @@ public class JInternalFrameCheckList extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInternalFrameCheckList() {
+		setClosable(true);
 		setBounds(100, 100, 450, 300);
 
 	}

@@ -157,7 +157,7 @@ public class JinternalFrameCreateBook extends JInternalFrame {
 					}else {
 						Book book = new Book();
 						book.setIsbn(jtextFieldISBN.getText());
-						book.setName(jtextFieldBooktitle.getText());
+						book.setTitle(jtextFieldBooktitle.getText());
 						book.setQuantity(Integer.parseInt(jtextFieldQuantity.getText().toString()));
 							//Get author
 							int selectedAuthorIndex = jcomboBoxAuthor.getSelectedIndex();
@@ -185,7 +185,7 @@ public class JinternalFrameCreateBook extends JInternalFrame {
 							}
 							for(int i=1; i<=book.getQuantity(); i++) {
 								BookItem bookItem = new BookItem();
-								String callnumber = book.getName().charAt(0)+""+book.getName().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
+								String callnumber = book.getTitle().charAt(0)+""+book.getTitle().charAt(1)+"-"+author.getName().charAt(0)+author.getName().charAt(1)+"-"+(totalQuantity+i);
 								bookItem.setCallnumber(callnumber);
 								bookItem.setIsbn(book.getIsbn());
 								bookItem.setStatus(0);
