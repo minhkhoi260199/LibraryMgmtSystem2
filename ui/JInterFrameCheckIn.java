@@ -499,7 +499,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		BookItem bookItem = bookItemModel.findCallnumberBorrowed(callnum);
 		BookModel bookModel = new BookModel();
 		Book book = bookModel.find(bookItem.getIsbn());
-		jtextFieldTitle.setText(book.getName());
+		jtextFieldTitle.setText(book.getTitle());
 	}
 	//function delete picked detail
 	private void jbtnDelete_actionPerformed(ActionEvent arg0) {

@@ -2,21 +2,17 @@ package entities;
 
 public class Book {
 	private String isbn;
-	private String name;
+	private String title;
 	private int author_id;
 	private int category_id;
 	private int quantity;
 	private int price;
 	
-	
 	public Book() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
-	public Book(String isbn, String name, int author_id, int category_id, int quantity, int price) {
-		super();
+	public Book(String isbn, String title, int author_id, int category_id, int quantity, int price) {
 		this.isbn = isbn;
-		this.name = name;
+		this.title = title;
 		this.author_id = author_id;
 		this.category_id = category_id;
 		this.quantity = quantity;
@@ -28,11 +24,11 @@ public class Book {
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public int getAuthor_id() {
 		return author_id;
@@ -58,5 +54,7 @@ public class Book {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	
+	
 	
 }

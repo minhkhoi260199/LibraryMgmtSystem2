@@ -47,6 +47,7 @@ public class JInternalFrameDetailList extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInternalFrameDetailList() {
+		setClosable(true);
 		setBounds(100, 100, 986, 666);
 		getContentPane().setLayout(null);
 		
