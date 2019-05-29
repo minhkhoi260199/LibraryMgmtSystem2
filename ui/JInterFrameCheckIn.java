@@ -356,6 +356,8 @@ public class JInterFrameCheckIn extends JInternalFrame {
 			sumBook ++;
 			CheckOutModel checkOutModel = new CheckOutModel();
 			CheckOut checkOut = checkOutModel.find(detail.getCheckout_id());
+			BookItemModel bookItemModel = new BookItemModel();
+			bookItemModel.updateStatusToOn(detail.getCallnumber());
 			sumPayment = sumPayment + detail.getPayment();
 			Date borrow_date = checkOut.getBorrow_date();
 			if(date.compareTo(borrow_date)>0) {
