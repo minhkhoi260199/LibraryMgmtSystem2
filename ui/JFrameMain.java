@@ -241,6 +241,8 @@ public class JFrameMain extends JFrame {
 	public void mntmAuthor_actionPerformed(ActionEvent e) {
 		JInternalFrameAuthorList jInternalFrameAuthorList = new JInternalFrameAuthorList();
 		jDesktopPaneMain.add(jInternalFrameAuthorList);
+		System.out.println("Hi");
+		System.out.println(getDepartment(employee_id));
 		if(getDepartment(employee_id)) {
 			jInternalFrameAuthorList.setVisible(true);
 		} else {
