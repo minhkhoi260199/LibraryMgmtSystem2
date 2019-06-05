@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class JInternalFrameDetailList extends JInternalFrame {
 	private JTable jtableDetail;
@@ -37,6 +38,11 @@ public class JInternalFrameDetailList extends JInternalFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -53,12 +59,13 @@ public class JInternalFrameDetailList extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public JInternalFrameDetailList() {
+		setTitle("Detail List");
 		setClosable(true);
-		setBounds(100, 100, 986, 666);
+		setBounds(100, 100, 986, 545);
 		getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 89, 962, 418);
+		scrollPane.setBounds(6, 19, 962, 418);
 		getContentPane().add(scrollPane);
 		
 		jtableDetail = new JTable();
@@ -71,7 +78,7 @@ public class JInternalFrameDetailList extends JInternalFrame {
 				jbuttonBack_actionPerformed(arg0);
 			}
 		});
-		jbuttonBack.setBounds(340, 539, 81, 41);
+		jbuttonBack.setBounds(338, 454, 81, 41);
 		getContentPane().add(jbuttonBack);
 		
 		jbuttonNext = new JButton("Next");
@@ -80,13 +87,13 @@ public class JInternalFrameDetailList extends JInternalFrame {
 				jbuttonNext_actionPerformed(arg0);
 			}
 		});
-		jbuttonNext.setBounds(520, 539, 81, 41);
+		jbuttonNext.setBounds(518, 454, 81, 41);
 		getContentPane().add(jbuttonNext);
 		
 		jlabelPage = new JLabel("New label");
 		jlabelPage.setHorizontalAlignment(SwingConstants.CENTER);
 		jlabelPage.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelPage.setBounds(442, 539, 55, 41);
+		jlabelPage.setBounds(440, 454, 55, 41);
 		getContentPane().add(jlabelPage);
 		
 		jbuttonLast = new JButton("Last");
@@ -95,7 +102,7 @@ public class JInternalFrameDetailList extends JInternalFrame {
 				jbuttonLast_actionPerformed(arg0);
 			}
 		});
-		jbuttonLast.setBounds(629, 539, 81, 41);
+		jbuttonLast.setBounds(627, 454, 81, 41);
 		getContentPane().add(jbuttonLast);
 		
 		jbuttonFirst = new JButton("First");
@@ -104,7 +111,7 @@ public class JInternalFrameDetailList extends JInternalFrame {
 				jbuttonFirst_actionPerformed(arg0);
 			}
 		});
-		jbuttonFirst.setBounds(231, 539, 81, 41);
+		jbuttonFirst.setBounds(229, 454, 81, 41);
 		getContentPane().add(jbuttonFirst);
 		loadJInternalFrame();
 	}
