@@ -97,6 +97,8 @@ public class BookModel {
 				book.setQuantity(resultSet.getInt("quantity"));
 				book.setPrice(resultSet.getInt("price"));
 			}
+			resultSet.close();
+			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e.getMessage());

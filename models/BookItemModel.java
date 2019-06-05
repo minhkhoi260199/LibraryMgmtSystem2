@@ -197,6 +197,8 @@ public class BookItemModel {
 			}else {
 				bookItem = null;
 			}
+			resultSet.close();
+			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e.getMessage());

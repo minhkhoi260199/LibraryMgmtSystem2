@@ -21,6 +21,7 @@ public class DetailModel {
 			preparedStatement.setString(3, detail.getCallnumber());
 			preparedStatement.setInt(4, detail.getPayment());
 			result = preparedStatement.executeUpdate() > 0;
+			preparedStatement.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
@@ -64,6 +65,8 @@ public class DetailModel {
 				detail.setStatus(resultSet.getInt("status"));
 				details.add(detail);
 			}
+			preparedStatement.close();
+			resultSet.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e.getMessage());
@@ -192,6 +195,8 @@ public class DetailModel {
 				detail.setStatus(resultSet.getInt("status"));
 				details.add(detail);
 			}
+			preparedStatement.close();
+			resultSet.close();
 		} catch (Exception e) {
 			// TODO: handle exception
 			System.err.println(e.getMessage());

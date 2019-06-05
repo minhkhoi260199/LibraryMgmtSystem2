@@ -248,15 +248,23 @@ public class JInterFrameCheckIn extends JInternalFrame {
 		defaultTableModel.addColumn("CheckOut ID");
 		defaultTableModel.addColumn("User ID");
 		defaultTableModel.addColumn("Callnumber");
+		defaultTableModel.addColumn("Book Title");
 		defaultTableModel.addColumn("Payment");
 		for(Detail detail : details) {
-			defaultTableModel.addRow(new Object[] {
-					detail.getDetail_id(),
-					detail.getCheckout_id(),
-					detail.getUser_id(),
-					detail.getCallnumber(),
-					detail.getPayment(),
-			});
+			if(detail != null) {
+				BookItemModel bookItemModel = new BookItemModel();
+				BookItem bookItem = bookItemModel.findCallnumberBorrowed(detail.getCallnumber());
+				BookModel bookModel = new BookModel();
+				Book book = bookModel.find(bookItem.getIsbn());
+				defaultTableModel.addRow(new Object[] {
+						detail.getDetail_id(),
+						detail.getCheckout_id(),
+						detail.getUser_id(),
+						detail.getCallnumber(),
+						book.getTitle(),
+						detail.getPayment(),
+				});
+			}
 		}
 		jtableCheckIn.setModel(defaultTableModel);
 		jtableCheckIn.getTableHeader().setReorderingAllowed(false);
@@ -404,6 +412,9 @@ public class JInterFrameCheckIn extends JInternalFrame {
 			}
 //			String str = "Total of returned books: "+sumBook+" books \nOut of date: " + sumOutOfDate + " days \nFee: " + sumFee + "\nPayment: " + sumPayment;
 			JOptionPane.showMessageDialog(null, str);
+			jtextFieldCallnumber.setText("");
+			jtextFieldCheckOutId.setText("");
+			jtextFieldUserId.setText("");
 			detailCheckOuts.clear();
 			autofilltableCheckIn(detailCheckOuts);
 		}
@@ -419,7 +430,6 @@ public class JInterFrameCheckIn extends JInternalFrame {
 					checkout_id = Integer.parseInt(jtextFieldCheckOutId.getText().toString());
 					DetailModel detailModel = new DetailModel();
 					long count = detailModel.countDB(checkout_id);
-					System.out.println(count);
 					if(count != 0) {
 						if(count % 20 == 0) {
 							pageNum = count / 20;

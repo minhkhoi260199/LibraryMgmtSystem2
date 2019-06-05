@@ -7,7 +7,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import entities.Book;
+import entities.BookItem;
+import entities.CheckOut;
 import entities.Detail;
+import models.BookItemModel;
+import models.BookModel;
+import models.CheckOutModel;
 import models.DetailModel;
 
 import java.awt.Font;
@@ -133,9 +139,11 @@ public class JInternalFrameDetailList extends JInternalFrame {
 		defaultTableModel.addColumn("CheckOut ID");
 		defaultTableModel.addColumn("User ID");
 		defaultTableModel.addColumn("Callnumber");
+//		defaultTableModel.addColumn("Title");
 		defaultTableModel.addColumn("Payment");
 		defaultTableModel.addColumn("Out of Date");
 		defaultTableModel.addColumn("Fee");
+//		defaultTableModel.addColumn("Borrow Date");
 		defaultTableModel.addColumn("Return Date");
 		defaultTableModel.addColumn("Employee ID");
 		for(Detail detail : details) {
@@ -143,14 +151,22 @@ public class JInternalFrameDetailList extends JInternalFrame {
 			if(detail.getEmployee_id() == 0) {
 				a = "";
 			}
+//			BookItemModel bookItemModel = new BookItemModel();
+//			BookItem bookItem = bookItemModel.findCallnumberBorrowed(detail.getCallnumber());
+//			BookModel bookModel = new BookModel();
+//			Book book = bookModel.find(bookItem.getIsbn());
+//			CheckOutModel checkOutModel = new CheckOutModel();
+//			CheckOut checkOut = checkOutModel.find(detail.getCheckout_id());
 			defaultTableModel.addRow(new Object[] {
 					detail.getDetail_id(),
 					detail.getCheckout_id(),
 					detail.getUser_id(),
 					detail.getCallnumber(),
+//					book.getTitle(),
 					detail.getPayment(),
 					detail.getOut_of_date(),
 					detail.getFee(),
+//					checkOut.getBorrow_date(),
 					detail.getReturn_date(),
 //					detail.getEmployee_id(),
 					a,

@@ -342,11 +342,16 @@ public class JInternalFrameCheckOut extends JInternalFrame {
 								detail.setCheckout_id(checkout_id);
 								BookModel bookModel = new BookModel();
 								Book book = bookModel.find(bookItem.getIsbn());
-								detail.setPayment(book.getPrice());
+								detail.setPayment(book.getPrice()/10);
 								detail.setUser_id(user_id);
 								DetailModel detailModel = new DetailModel();
 								detailModel.create(detail);
 							}
+							bookItems1.clear();
+							jtextFieldCallnumber.setText("");
+							jtextFieldISBN.setText("");
+							jtextFieldUserId.setText("");
+							fillDataToTable1(bookItems1);
 							JOptionPane.showMessageDialog(null, "Creating checkout successfully.");
 						//show message if the check out id is 0
 						}else {
