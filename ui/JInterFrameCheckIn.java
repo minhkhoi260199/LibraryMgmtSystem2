@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import entities.Book;
@@ -43,6 +44,11 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -61,11 +67,11 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	public JInterFrameCheckIn() {
 		setClosable(true);
 		setTitle("CheckIn ");
-		setBounds(100, 100, 1235, 575);
+		setBounds(100, 100, 1235, 579);
 		getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 126, 561, 349);
+		scrollPane.setBounds(23, 102, 561, 349);
 		getContentPane().add(scrollPane);
 		
 		jtableCheckOutList = new JTable();
@@ -78,7 +84,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonToStart_actionPerformed(arg0);
 			}
 		});
-		jbuttonToStart.setBounds(15, 487, 90, 40);
+		jbuttonToStart.setBounds(6, 463, 90, 40);
 		getContentPane().add(jbuttonToStart);
 		
 		jbuttonPrevious = new JButton("<");
@@ -87,7 +93,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonPrevious_actionPerformed(arg0);
 			}
 		});
-		jbuttonPrevious.setBounds(116, 487, 53, 40);
+		jbuttonPrevious.setBounds(107, 463, 53, 40);
 		getContentPane().add(jbuttonPrevious);
 		
 		jbuttonLast = new JButton(">>");
@@ -96,7 +102,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonLast_actionPerformed(e);
 			}
 		});
-		jbuttonLast.setBounds(327, 487, 90, 40);
+		jbuttonLast.setBounds(318, 463, 90, 40);
 		getContentPane().add(jbuttonLast);
 		
 		jbuttonNext = new JButton(">");
@@ -105,41 +111,41 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonNext_actionPerformed(e);
 			}
 		});
-		jbuttonNext.setBounds(262, 487, 53, 40);
+		jbuttonNext.setBounds(253, 463, 53, 40);
 		getContentPane().add(jbuttonNext);
 		
 		jlabelPage = new JLabel("jlabelPage");
 		jlabelPage.setHorizontalAlignment(SwingConstants.CENTER);
 		jlabelPage.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		jlabelPage.setBounds(176, 487, 81, 40);
+		jlabelPage.setBounds(167, 463, 81, 40);
 		getContentPane().add(jlabelPage);
 		
 		jlabelPageTotal = new JLabel("jlabelPageTotal");
 		jlabelPageTotal.setHorizontalAlignment(SwingConstants.CENTER);
 		jlabelPageTotal.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		jlabelPageTotal.setBounds(429, 487, 147, 40);
+		jlabelPageTotal.setBounds(420, 463, 147, 40);
 		getContentPane().add(jlabelPageTotal);
 		
 		JLabel lblCallnumber = new JLabel("Callnumber :");
 		lblCallnumber.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblCallnumber.setBounds(23, 29, 90, 35);
+		lblCallnumber.setBounds(644, 55, 90, 35);
 		getContentPane().add(lblCallnumber);
 		
 		jtextFieldCallnumber = new JTextField();
 		jtextFieldCallnumber.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jtextFieldCallnumber.setBounds(125, 27, 199, 39);
+		jtextFieldCallnumber.setBounds(746, 53, 199, 39);
 		getContentPane().add(jtextFieldCallnumber);
 		jtextFieldCallnumber.setColumns(10);
 		
 		JLabel lblUserId = new JLabel("User ID :");
 		lblUserId.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblUserId.setBounds(777, 29, 81, 35);
+		lblUserId.setBounds(653, 6, 81, 35);
 		getContentPane().add(lblUserId);
 		
 		jtextFieldUserId = new JTextField();
 		jtextFieldUserId.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jtextFieldUserId.setColumns(10);
-		jtextFieldUserId.setBounds(870, 29, 199, 35);
+		jtextFieldUserId.setBounds(746, 6, 199, 35);
 		getContentPane().add(jtextFieldUserId);
 		
 		jbtnSubmit = new JButton("Submit");
@@ -148,20 +154,14 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbtnSubmit_actionPerformed(arg0);
 			}
 		});
-		jbtnSubmit.setBounds(1081, 29, 133, 35);
+		jbtnSubmit.setBounds(966, 56, 133, 35);
 		getContentPane().add(jbtnSubmit);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(653, 126, 561, 349);
+		scrollPane_1.setBounds(661, 102, 556, 349);
 		getContentPane().add(scrollPane_1);
 		
 		jtableCheckIn = new JTable();
-		jtableCheckIn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				jtableCheckIn_mouseClicked(arg0);
-			}
-		});
 		scrollPane_1.setViewportView(jtableCheckIn);
 		
 		jbtnCheckIn = new JButton("Check In");
@@ -170,18 +170,18 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbtnCheckIn_actionPerformed(arg0);
 			}
 		});
-		jbtnCheckIn.setBounds(1060, 487, 154, 40);
+		jbtnCheckIn.setBounds(560, 496, 154, 40);
 		getContentPane().add(jbtnCheckIn);
 		
 		jtextFieldCheckOutId = new JTextField();
 		jtextFieldCheckOutId.setFont(new Font("SansSerif", Font.PLAIN, 15));
 		jtextFieldCheckOutId.setColumns(10);
-		jtextFieldCheckOutId.setBounds(516, 29, 199, 35);
+		jtextFieldCheckOutId.setBounds(133, 41, 199, 35);
 		getContentPane().add(jtextFieldCheckOutId);
 		
 		JLabel jlabelCheckOutId = new JLabel("Checkout ID :");
 		jlabelCheckOutId.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jlabelCheckOutId.setBounds(414, 29, 90, 35);
+		jlabelCheckOutId.setBounds(31, 41, 90, 35);
 		getContentPane().add(jlabelCheckOutId);
 		
 		jbuttonSelect = new JButton(">>");
@@ -190,28 +190,27 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonSelect_actionPerformed(e);
 			}
 		});
-		jbuttonSelect.setBounds(588, 259, 53, 40);
+		jbuttonSelect.setBounds(596, 235, 53, 40);
 		getContentPane().add(jbuttonSelect);
 		
-		JLabel lblBookTitle = new JLabel("Book Title");
-		lblBookTitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		lblBookTitle.setBounds(777, 76, 90, 35);
-		getContentPane().add(lblBookTitle);
-		
-		jtextFieldTitle = new JTextField();
-		jtextFieldTitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
-		jtextFieldTitle.setColumns(10);
-		jtextFieldTitle.setBounds(870, 76, 199, 35);
-		getContentPane().add(jtextFieldTitle);
-		
-		jbtnDelete = new JButton("Delete");
+		jbtnDelete = new JButton("Remove from list");
+		jbtnDelete.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		jbtnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				jbtnDelete_actionPerformed(arg0);
 			}
 		});
-		jbtnDelete.setBounds(1081, 76, 133, 35);
+		jbtnDelete.setBounds(1023, 454, 180, 35);
 		getContentPane().add(jbtnDelete);
+		
+		jbtnFind = new JButton("Find");
+		jbtnFind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jbtnFind_actionPerformed(arg0);
+			}
+		});
+		jbtnFind.setBounds(344, 41, 133, 35);
+		getContentPane().add(jbtnFind);
 		loadJInternalFrame();
 	}
 	long page = 1;
@@ -231,8 +230,8 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	private List<Detail> detailCheckOuts = new ArrayList<Detail>();
 	private JButton jbuttonSelect;
 	private JButton jbtnCheckIn;
-	private JTextField jtextFieldTitle;
 	private JButton jbtnDelete;
+	private JButton jbtnFind;
 	private void loadJInternalFrame() {
 		jbuttonNext.setEnabled(false);
 		jbuttonLast.setEnabled(false);
@@ -356,6 +355,8 @@ public class JInterFrameCheckIn extends JInternalFrame {
 			sumBook ++;
 			CheckOutModel checkOutModel = new CheckOutModel();
 			CheckOut checkOut = checkOutModel.find(detail.getCheckout_id());
+			BookItemModel bookItemModel = new BookItemModel();
+			bookItemModel.updateStatusToOn(detail.getCallnumber());
 			sumPayment = sumPayment + detail.getPayment();
 			Date borrow_date = checkOut.getBorrow_date();
 			if(date.compareTo(borrow_date)>0) {
@@ -409,42 +410,6 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	//event submit information to search callnumber and userid to get detail id/ search by checkout_id to get 
 	//list of borrowed book in detail table
 	private void jbtnSubmit_actionPerformed(ActionEvent arg0) {
-		
-		if(jtextFieldCallnumber.getText().isEmpty() && jtextFieldUserId.getText().isEmpty()) {
-			
-			if(!jtextFieldCheckOutId.getText().isEmpty()) {
-				try {
-					checkout_id = Integer.parseInt(jtextFieldCheckOutId.getText().toString());
-					DetailModel detailModel = new DetailModel();
-					long count = detailModel.countDB(checkout_id);
-					System.out.println(count);
-					if(count != 0) {
-						if(count % 20 == 0) {
-							pageNum = count / 20;
-						}else {
-							pageNum = (count / 20) + 1;
-						}
-						jlabelPage.setText("1");
-						jlabelPageTotal.setText("1/" + pageNum);
-						jbuttonNext.setEnabled(true);
-						jbuttonLast.setEnabled(true);
-						jbuttonPrevious.setEnabled(true);
-						jbuttonToStart.setEnabled(true);
-						jlabelPage.setVisible(true);
-						jlabelPageTotal.setVisible(true);
-						autofilltableCheckout(detailModel.loadData(1,checkout_id));
-					}else {
-						JOptionPane.showMessageDialog(null, "The checkout id is invalid.");
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-					System.err.println(e.getMessage());
-					JOptionPane.showMessageDialog(null, "The checkout id contains only number.");
-				}
-			}else {
-				JOptionPane.showMessageDialog(null, "Please enter checkout id.");
-			}
-		}else {
 			if(jtextFieldCallnumber.getText().isEmpty() || jtextFieldUserId.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Please enter the callnumber/user id.");
 			}else {
@@ -460,50 +425,46 @@ public class JInterFrameCheckIn extends JInternalFrame {
 					}else {
 						JOptionPane.showMessageDialog(null, "The user id or callnumber is invalid.");
 					}
-					try {
-						checkout_id = Integer.parseInt(jtextFieldCheckOutId.getText().toString());
-//						DetailModel detailModel = new DetailModel();
-						long count = detailModel.countDB(checkout_id);
-						System.out.println(count);
-						if(count != 0) {
-							if(count % 20 == 0) {
-								pageNum = count / 20;
-							}else {
-								pageNum = (count / 20) + 1;
-							}
-							jlabelPage.setText("1");
-							jlabelPageTotal.setText("1/" + pageNum);
-							jbuttonNext.setEnabled(true);
-							jbuttonLast.setEnabled(true);
-							jbuttonPrevious.setEnabled(true);
-							jbuttonToStart.setEnabled(true);
-							jlabelPage.setVisible(true);
-							jlabelPageTotal.setVisible(true);
-							autofilltableCheckout(detailModel.loadData(1,checkout_id));
-						}else {
-							JOptionPane.showMessageDialog(null, "The checkout id is invalid.");
-						}
-					} catch (Exception e) {
-						// TODO: handle exception
-						System.err.println(e.getMessage());
-						JOptionPane.showMessageDialog(null, "The checkout id contains only number.");
-					}
-				} catch (Exception e) {
+				 } catch (Exception e) {
 					// TODO: handle exception
 					JOptionPane.showMessageDialog(null, "The user id contains only number.");
-				}
+				 }
 			}
-		}
 	}
-	//event show book title in text field when selecting a row in Checkin Table
-	private void jtableCheckIn_mouseClicked(MouseEvent arg0) {
-		int selectedRow = jtableCheckIn.getSelectedRow();
-		String callnum = jtableCheckIn.getValueAt(selectedRow, 3).toString();
-		BookItemModel bookItemModel = new BookItemModel();
-		BookItem bookItem = bookItemModel.findCallnumberBorrowed(callnum);
-		BookModel bookModel = new BookModel();
-		Book book = bookModel.find(bookItem.getIsbn());
-		jtextFieldTitle.setText(book.getTitle());
+	//Find by checkoutID
+	private void jbtnFind_actionPerformed(ActionEvent arg0) {
+		if(!jtextFieldCheckOutId.getText().isEmpty()) {
+			try {
+				checkout_id = Integer.parseInt(jtextFieldCheckOutId.getText().toString());
+				DetailModel detailModel = new DetailModel();
+				long count = detailModel.countDB(checkout_id);
+				System.out.println(count);
+				if(count != 0) {
+					if(count % 20 == 0) {
+						pageNum = count / 20;
+					}else {
+						pageNum = (count / 20) + 1;
+					}
+					jlabelPage.setText("1");
+					jlabelPageTotal.setText("1/" + pageNum);
+					jbuttonNext.setEnabled(true);
+					jbuttonLast.setEnabled(true);
+					jbuttonPrevious.setEnabled(true);
+					jbuttonToStart.setEnabled(true);
+					jlabelPage.setVisible(true);
+					jlabelPageTotal.setVisible(true);
+					autofilltableCheckout(detailModel.loadData(1,checkout_id));
+				}else {
+					JOptionPane.showMessageDialog(null, "The checkout id is invalid.");
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.err.println(e.getMessage());
+				JOptionPane.showMessageDialog(null, "The checkout id contains only number.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Please enter checkout id.");
+		}
 	}
 	//function delete picked detail
 	private void jbtnDelete_actionPerformed(ActionEvent arg0) {
@@ -531,7 +492,6 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				jbuttonToStart.setEnabled(true);
 				jlabelPage.setVisible(true);
 				jlabelPageTotal.setVisible(true);
-				jtextFieldTitle.setText("");
 				detailCheckOuts.remove(selectedRow);
 				autofilltableCheckIn(detailCheckOuts);
 				autofilltableCheckout(detailModel.loadData(1,checkout_id));
