@@ -421,7 +421,6 @@ public class JInterFrameCheckIn extends JInternalFrame {
 	//event submit information to search callnumber and userid to get detail id/ search by checkout_id to get 
 	//list of borrowed book in detail table
 	private void jbtnSubmit_actionPerformed(ActionEvent arg0) {
-<<<<<<< HEAD
 		
 		if(jtextFieldCallnumber.getText().isEmpty() && jtextFieldUserId.getText().isEmpty()) {
 			
@@ -457,8 +456,6 @@ public class JInterFrameCheckIn extends JInternalFrame {
 				JOptionPane.showMessageDialog(null, "Please enter checkout id.");
 			}
 		}else {
-=======
->>>>>>> dbdb441a68aced70467fc2cd2843e970deda6407
 			if(jtextFieldCallnumber.getText().isEmpty() || jtextFieldUserId.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Please enter the callnumber/user id.");
 			}else {
@@ -479,6 +476,7 @@ public class JInterFrameCheckIn extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "The user id contains only number.");
 				 }
 			}
+		}
 	}
 	//Find by checkoutID
 	private void jbtnFind_actionPerformed(ActionEvent arg0) {
