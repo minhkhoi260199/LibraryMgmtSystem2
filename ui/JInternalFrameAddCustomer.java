@@ -253,21 +253,28 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 			customer.setName(jtextFieldName.getText());
 			customer.setAddress(jtextFieldAddress.getText());
 			if(jtextFieldPhone.getText().length()< 10){
-				JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");
+				JOptionPane.showMessageDialog(null, "Phone number must have more than 10 numbers");
 			}else {
-				customer.setPhone(jtextFieldPhone.getText());
-				if(customerModel.update(customer)) {
-					JOptionPane.showMessageDialog(null, "Done");
-					fillDatatoJTable(customerModel.findAll());
-					jbtnAdd.setEnabled(true);
-					jbtnDelete.setEnabled(false);
-					jbtnUpdate.setEnabled(false);
-					jtextFieldName.setText("");
-					jtextFieldAddress.setText("");
-					jtextFieldPhone.setText("");
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Failed");
+				try {
+					int phoneCus = Integer.parseInt(jtextFieldPhone.getText());
+					String phoneNum = String.valueOf(phoneCus);
+					customer.setPhone(jtextFieldPhone.getText());
+					if(customerModel.update(customer)) {
+						JOptionPane.showMessageDialog(null, "Done");
+						fillDatatoJTable(customerModel.findAll());
+						jbtnAdd.setEnabled(true);
+						jbtnDelete.setEnabled(false);
+						jbtnUpdate.setEnabled(false);
+						jtextFieldName.setText("");
+						jtextFieldAddress.setText("");
+						jtextFieldPhone.setText("");
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Failed");
+					}
+				}catch (Exception e2) {
+					// TODO: handle exception
+					JOptionPane.showMessageDialog(null, "Phone number only contains numbers");
 				}
 			}
 			
@@ -288,18 +295,25 @@ public class JInternalFrameAddCustomer extends JInternalFrame {
 				customer.setName(jtextFieldName.getText());
 				customer.setAddress(jtextFieldAddress.getText());
 				if(jtextFieldPhone.getText().length()< 10){
-					JOptionPane.showMessageDialog(null, "Phone number must bigger 10 number");
+					JOptionPane.showMessageDialog(null, "Phone number must have more than 10 numbers");
 				}else {
-					customer.setPhone(jtextFieldPhone.getText());
-					if(customerModel.create(customer)) {
-						JOptionPane.showMessageDialog(null, "Successfull");
-						fillDatatoJTable(customerModel.findAll());
-						jtextFieldName.setText("");
-						jtextFieldAddress.setText("");
-						jtextFieldPhone.setText("");
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Failed");
+					try {
+						int phoneCus = Integer.parseInt(jtextFieldPhone.getText());
+						String phoneNum = String.valueOf(phoneCus);
+						customer.setPhone(jtextFieldPhone.getText());
+						if(customerModel.create(customer)) {
+							JOptionPane.showMessageDialog(null, "Successfull");
+							fillDatatoJTable(customerModel.findAll());
+							jtextFieldName.setText("");
+							jtextFieldAddress.setText("");
+							jtextFieldPhone.setText("");
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Failed");
+						}
+					}catch (Exception e) {
+						// TODO: handle exception
+						JOptionPane.showMessageDialog(null, "Phone number only contains numbers");
 					}
 				}
 			}

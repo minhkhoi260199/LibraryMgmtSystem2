@@ -283,8 +283,9 @@ public class JInternalFrameDetailList extends JInternalFrame {
 				}
 				jlabelPage.setText("1/"+pageNum);
 				autoloadtabledate(detailModel.loadDataDetail(1,condition,type));
+			}else {
+				autoloadtabledate(detailModel.loadDataDetail(1,condition,type));
 			}
-			autoloadtabledate(detailModel.loadDataDetail(1,condition,type));
 		}catch (Exception e) {
 			// TODO: handle exception
 			JOptionPane.showMessageDialog(null, "Please enter the id of " + type);

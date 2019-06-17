@@ -149,8 +149,8 @@ public class JinternalFrameCategory extends JInternalFrame {
 		try {
 			CategoryModel categoryModel = new CategoryModel();
 			Category category = new Category();
-			String type = jtextFieldCategoryName.getText().toLowerCase();
-			if(categoryModel.checkCategory(type)) {
+			String typeLong = jtextFieldCategoryName.getText().toLowerCase();
+			if(categoryModel.checkCategory(typeLong)) {
 				if (jtextFieldCategoryName.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Pls enter name of category you want to add");
 				} else {

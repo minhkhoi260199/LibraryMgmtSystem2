@@ -248,8 +248,6 @@ public class JInternalFrameBook extends JInternalFrame {
 		DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>();
 		comboBoxModel.addElement("Title");
 		comboBoxModel.addElement("ISBN");
-		comboBoxModel.addElement("Category");
-		comboBoxModel.addElement("Author");
 		jcomboBoxFillter.setModel(comboBoxModel);
 	}
 	public void autoFillDataToTable(List<Book> books) {
@@ -363,6 +361,8 @@ public class JInternalFrameBook extends JInternalFrame {
 			book.setCategory_id(category.getCategory_id());
 			if(bookModel.update(book)) {
 				JOptionPane.showMessageDialog(null, "Book Successfully Updated.");
+				List<Book> books = bookModel.findAll();
+				autoFillDataToTable(books);
 				//Update bookitem
 				BookItemModel bookItemModel = new BookItemModel();
 				if(bookItemModel.deleteBookitemByISBN(isbn)) {

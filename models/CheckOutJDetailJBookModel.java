@@ -60,10 +60,10 @@ public class CheckOutJDetailJBookModel {
 				count = 0;
 			}
 		}else {
-			if(type == "borrowing employee") {
-				type = "borrowed_employee_id";
+			if(type.equalsIgnoreCase("borrowing employee")) {
+				type = "detail.borrowed_employee_id";
 				try {
-					String que = "Select count(*) FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber LEFT JOIN book ON book.isbn = bookitem.isbn LEFT JOIN checkout ON checkout.checkout_id = detail.checkout_id having "+type+" = "+condition+"";
+					String que = "Select count(*) FROM (Select detail.employee_id as return_employee_id, book.title, checkout.borrow_date, checkout.employee_id as borrow_employee_id, detail.status FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber LEFT JOIN book ON book.isbn = bookitem.isbn LEFT JOIN checkout ON checkout.checkout_id = detail.checkout_id) as detail where detail.borrow_employee_id = "+condition+"";
 					Connection cn = ConnectDB.getConnection();
 					Statement st = cn.createStatement();
 					ResultSet rs = st.executeQuery(que);
@@ -78,10 +78,10 @@ public class CheckOutJDetailJBookModel {
 					System.err.println(e.getMessage());
 					count = 0;
 				}
-			}else if(type == "returning employee") {
+			}else if(type.equalsIgnoreCase("returning employee")) {
 				type = "returned_employee_id";
 				try {
-					String que = "Select count(*) FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber LEFT JOIN book ON book.isbn = bookitem.isbn LEFT JOIN checkout ON checkout.checkout_id = detail.checkout_id having "+type+" = "+condition+"";
+					String que = "Select count(*) FROM (Select detail.employee_id as return_employee_id, book.title, checkout.borrow_date, checkout.employee_id as borrow_employee_id, detail.status FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber LEFT JOIN book ON book.isbn = bookitem.isbn LEFT JOIN checkout ON checkout.checkout_id = detail.checkout_id) as detail where detail.return_employee_id = "+condition+"";
 					Connection cn = ConnectDB.getConnection();
 					Statement st = cn.createStatement();
 					ResultSet rs = st.executeQuery(que);
@@ -99,7 +99,7 @@ public class CheckOutJDetailJBookModel {
 			}else {
 				type = "user_id";
 				try {
-					String que = "Select count(*) FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber LEFT JOIN book ON book.isbn = bookitem.isbn LEFT JOIN checkout ON checkout.checkout_id = detail.checkout_id where "+type+" = "+condition+"";
+					String que = "Select count(*) FROM (Select detail.user_id,detail.employee_id as return_employee_id, book.title, checkout.borrow_date, checkout.employee_id as borrow_employee_id, detail.status FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber LEFT JOIN book ON book.isbn = bookitem.isbn LEFT JOIN checkout ON checkout.checkout_id = detail.checkout_id) as detail where detail.user_id = "+condition+"";
 					Connection cn = ConnectDB.getConnection();
 					Statement st = cn.createStatement();
 					ResultSet rs = st.executeQuery(que);
@@ -152,8 +152,8 @@ public class CheckOutJDetailJBookModel {
 				checkOutJDetailJBook = null;
 			}
 		}else {
-			if(type == "borrowing employee") {
-				type = "borrowed_employee_id";
+			if(type.equalsIgnoreCase("borrowing employee")) {
+				type = "borrow_employee_id";
 				try {
 					PreparedStatement preparedStatement = ConnectDB.getConnection()
 							.prepareStatement("Select detail.detail_id, detail.checkout_id, detail.user_id, detail.callnumber, detail.out_of_date, detail.payment, detail.fee, detail.return_date, detail.employee_id as return_employee_id, book.title, checkout.borrow_date, checkout.employee_id as borrow_employee_id, detail.status FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber "
@@ -185,8 +185,8 @@ public class CheckOutJDetailJBookModel {
 					System.err.println(e.getMessage());
 					checkOutJDetailJBook = null;
 				}
-			}else if(type == "returning employee"){
-				type = "returned_employee_id";
+			}else if(type.equalsIgnoreCase("returning employee")){
+				type = "return_employee_id";
 				try {
 					PreparedStatement preparedStatement = ConnectDB.getConnection()
 							.prepareStatement("Select detail.detail_id, detail.checkout_id, detail.user_id, detail.callnumber, detail.out_of_date, detail.payment, detail.fee, detail.return_date, detail.employee_id as return_employee_id, book.title, checkout.borrow_date, checkout.employee_id as borrow_employee_id, detail.status FROM detail LEFT JOIN bookitem ON bookitem.callnumber = detail.callnumber "

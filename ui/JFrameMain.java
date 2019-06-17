@@ -178,17 +178,6 @@ public class JFrameMain extends JFrame {
 			}
 		});
 		mnManage.add(mntmCustomer);
-		
-		JMenu mnReceiptList = new JMenu("Receipt List");
-		menuBar.add(mnReceiptList);
-		
-		JMenuItem mntmCheckoutList = new JMenuItem("Checkout List");
-		mntmCheckoutList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mntmCheckoutList_actionPerformed(arg0);
-			}
-		});
-		mnReceiptList.add(mntmCheckoutList);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -205,7 +194,6 @@ public class JFrameMain extends JFrame {
 			EmployeeModel employeeModel = new EmployeeModel();
 			Employee employee = new Employee();
 			employee= employeeModel.find(employee_id);
-			System.out.println(employee.getDepartment());
 			if (employee.getDepartment().equalsIgnoreCase("root")) {
 				result = true;
 			}else{
@@ -241,8 +229,6 @@ public class JFrameMain extends JFrame {
 	public void mntmAuthor_actionPerformed(ActionEvent e) {
 		JInternalFrameAuthorList jInternalFrameAuthorList = new JInternalFrameAuthorList();
 		jDesktopPaneMain.add(jInternalFrameAuthorList);
-		System.out.println("Hi");
-		System.out.println(getDepartment(employee_id));
 		if(getDepartment(employee_id)) {
 			jInternalFrameAuthorList.setVisible(true);
 		} else {
@@ -291,12 +277,6 @@ public class JFrameMain extends JFrame {
 		JinternalFrameListBookItem jinternalFrameListBookItem = new JinternalFrameListBookItem();
 		jDesktopPaneMain.add(jinternalFrameListBookItem);
 		jinternalFrameListBookItem.setVisible(true);
-	}
-	
-	public void mntmCheckoutList_actionPerformed(ActionEvent arg0) {
-		JInternalFrameCheckList jInternalFrameCheckList = new JInternalFrameCheckList();
-		jDesktopPaneMain.add(jInternalFrameCheckList);
-		jInternalFrameCheckList.setVisible(true);
 	}
 	
 	public void mntmCheckIn_actionPerformed(ActionEvent e) {

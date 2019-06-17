@@ -64,17 +64,15 @@ public class CategoryModel {
 		}
 		return categories;
 	}	
-	public boolean checkCategory(String type) {
+	public boolean checkCategory(String kw) {
 		boolean check = true;
 		try {
 			PreparedStatement preparedStatement = ConnectDB.getConnection()
-					.prepareStatement("select type from categories");
+					.prepareStatement("select * from categories where categories.type = ?");
+			preparedStatement.setString(1, kw);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next()) {
-				String ktcategory = resultSet.getString(type);
-				if(ktcategory == type) {
-					check = false;
-				}
+			if(resultSet.next()) {
+				return false;
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
